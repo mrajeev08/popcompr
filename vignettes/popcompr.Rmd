@@ -1,0 +1,57 @@
+---
+title: "popcompr"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{popcompr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(popcompr)
+```
+
+# Example
+
+```{r}
+library(raster)
+library(data.table)
+library(foreach)
+library(plotly)
+library(fasterize)
+library(sf)
+
+pop1 <- raster("data-raw/mdg_ppp_2018.tif")
+pop2 <- raster("data-raw/population_mdg_2018-10-01.tif")
+exe <- compare_pop(list(pop1, pop2), parallel = FALSE, estimate_time = TRUE)
+
+
+# parallelized example
+library(doParallel)
+cl <- makeCluster(detectCores() - 1)
+registerDoParallel(cl)
+system.time(
+  exe2 <- compare_pop(list(pop1, pop2), parallel = TRUE) # without that arg run it normally
+)
+stopCluster(cl)
+
+```
+
+
+```{r}
+# Admin 2 example
+# Try to get a simplified one? Or plot using leaflet/D3.js
+shape <- httr::GET("https://www.geoboundaries.org/gbRequest.html?ISO=MDG&ADM=ADM2") 
+out <- jsonlite::fromJSON(rawToChar(shape$content))
+mada_shape <- sf::st_read(out$gjDownloadURL)
+mada_shape <- aggregate_to_shp(brick = exe2, sf = mada_shape, max_adjacent = 100)
+
+```
+

@@ -11,6 +11,7 @@
 #' @import raster
 #'
 match_nearest <- function(unmatched_pix, matched_raster, max_adjacent = 100) {
+
   find <- data.table(adjacent(matched_raster, unmatched_pix@grid.index))
   find$match <- matched_raster[find$to]
   matched <- find[, .(match = min(match, na.rm = TRUE)), by = "from"] # match is the friction grid index
@@ -43,4 +44,51 @@ match_nearest <- function(unmatched_pix, matched_raster, max_adjacent = 100) {
   matched_raster[unmatched_pix@grid.index] <- unmatched_pix$match_id
 
   return(matched_raster)
+}
+
+cells_away <- function(origin_cell, dist_m, res_m, ncol, nrow, ncells) {
+
+  n_away <- floor(dist_m/res_m)
+  origin_row <- ceiling(origin_cell/ncol)
+  origin_col <- ifelse(origin_cell %% ncol == 0, ncol, origin_cell %% ncol)
+
+  if(n_away == 0) {
+    return(origin_cell)
+  } else {
+    aways <- data.table(expand.grid(col = -n_away:n_away, row = -n_away:n_away))
+    aways <- aways[abs(row) + abs(col) != 0 & pmax(abs(col), abs(row)) == n_away]
+    aways <- aways[, c("col", "row") := .(origin_col + col,
+                                          origin_row + row)]
+    aways <- aways[row <= nrow & row > 0 & col <= ncol & col > 0]
+    aways[, cell_id :=  (col - 1) * ncol  + ifelse(row %% ncol == 0,
+                                                   ncol,
+                                                   row %% ncol)]
+    if(nrow(aways) > 0) out <- aways$cell_id else out <- ncells + 1
+    return(out)
+  }
+
+}
+
+
+moves_away <- function(tolook = 100, cell_ids) {
+
+  n_away <- data.table(expand.grid(col = -tolook:tolook, row = -tolook:tolook))
+  rowcols <- data.table(rowColFromCell(cell_ids, rast))
+  origin_col <- ifelse(origin_cell %% ncol == 0, ncol, origin_cell %% ncol)
+
+  if(n_away == 0) {
+    return(origin_cell)
+  } else {
+    aways <-
+    aways <- aways[abs(row) + abs(col) != 0 & pmax(abs(col), abs(row)) == n_away]
+    aways <- aways[, c("col", "row") := .(origin_col + col,
+                                          origin_row + row)]
+    aways <- aways[row <= nrow & row > 0 & col <= ncol & col > 0]
+    aways[, cell_id :=  (col - 1) * ncol  + ifelse(row %% ncol == 0,
+                                                   ncol,
+                                                   row %% ncol)]
+    if(nrow(aways) > 0) out <- aways$cell_id else out <- ncells + 1
+    return(out)
+  }
+
 }

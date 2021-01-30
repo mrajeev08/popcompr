@@ -1,93 +1,146 @@
-# Fast way?
-# 1. get shapefile
-# 2. Rasterize (in UTM) (at appropriate resolution)
-# A UTM coordinate's Easting and Northing are both distance measurements made in meters.
-# 3. Use coordinates and one based indexing to find the grid cells where the cells belong (for large/long countries this will be apprx and may be wrong? try with Mada and see how wrong it is) (warn if people go missing...or if using multiple UTMs using the ESRI UTM file, clip to each one and put back together...)
-# Step 1: use rasterize to get points which overlap the UTM section
-# Step 2: for each UTM, turn into a raster
-# Step 3: use one based indexing to match point to grid cell
-# Transform those back to latitude & longitude
-# Do this for all the utm zones covered by the country
-# put them back together and use a lat/long grid and then get raster id for each of the points and aggregate to this raster
+#' Title
+#'
+#' @param pop1
+#' @param pop2
+#' @param res_degrees
+#'
+#' @return
+#' @export
+#' @import raster
+#' @examples
+#'
+#' To do: check crs here too? (just in case)
+#'
+make_template <- function(pops, res_degrees) {
 
-library(raster)
-library(dplyr)
-library(fasterize)
-library(data.table)
+  # make sure all crs's are the same
+  if(!all_longlat(pops)) stop("Not all rasters are in Lat/Long CRS")
 
-pop1 <- raster("data-raw/mdg_ppp_2018.tif")
-pop2 <- raster("data-raw/population_mdg_2018-10-01.tif")
+  ext <- do.call(raster::merge, lapply(pops, raster::extent))
 
+  temp <- raster(pops[[1]])
+  temp <- extend(temp, ext) # make sure extent covers all the rasters
 
-pop2_dt[, new_cell := cellFromXY(pop1, cbind(x, y))]
+  # set degree
+  res(temp) <- res_degrees
+  values(temp) <- NA # set all to NA
+  return(temp)
 
-shape <- httr::GET("https://www.geoboundaries.org/gbRequest.html?ISO=MDG&ADM=ADM0")
-out <- jsonlite::fromJSON(rawToChar(shape$content))
-shape <- sf::st_read(out$gjDownloadURL)
-utm <- sf::st_read("data-raw/World_UTM_Grid/0f893164-d038-48ff-98dd-9fefb26127d3202034-1-145zfwr.nwf1.shp")
+}
 
+resample_to_template <- function(pop, template, parallel,
+                                 estimate_time) {
 
-# less than or equal to M == S
-# less than or equal to N == N
-# Process this so that for each one you get the parameters to use the 1 based indexing to match to grid cells
-utm$dir <- ifelse(utm$ROW_ %in% LETTERS[14:26], "N", "S")
-utm$zone <- paste0(utm$ZONE, utm$dir)
+  out <- resample_fun(pop, template, parallel, estimate_time)
 
-library(fasterize)
-library(sf)
-utms <- st_intersects(utm, shape, sparse = FALSE)
-mada_utms <- utm[which(utms == TRUE), ]
-plot(utm[which(utms == TRUE), ], max.plot = 1)
+  if(estimate_time) {
 
+    return(out)
 
-pop1_utm <- fasterize(utm, pop1, field = "FID")
-pop1_dt <- data.table(pop = pop1[], utm = pop1_utm[],
-                      coordinates(pop1))
-pop1_dt <- pop1_dt[!is.na(pop)]
-pop1_dt$crs <- glue::glue("+proj=utm +zone={utm$zone[pop1_dt$utm]} +datum=WGS84")
+  } else {
 
-pop1_dt[, c("x_utm", "y_utm") := as.data.frame(
-  rgdal::project(cbind(x, y), proj = as.character(crs[1]))
-  ), by = "utm"]
+    # reaggregate at the end
+    out <- out[, sum(V1, na.rm = TRUE), keyby = new_id]
+    missing <- out[is.na(new_id)]$V1
+    out <- out[!is.na(new_id)]
 
-# this takes forever
-setkey(pop1_dt, utm)
+    template[out$new_id] <- out$V1
+    names(template) <- names(pop)
 
-# get x_topl & y_topl for each of the utm grids
-pop1_reproj <-
-  foreach(i = 1:nrow(mada_utms), .combine = rbind) %do% {
-    print(i)
-    rast <- create_utm_raster(utm, id = mada_utms$FID[i], res = 1000)
-    test <- pop1_dt[utm == mada_utms$FID[i]]
-    x_topl = bbox(rast)[1, "min"]
-    y_topl = bbox(rast)[2, "max"]
+    if(length(missing) > 0) {
+      print(paste0("warning: ", missing, " people were not matched."))
+    }
 
-    test[, cell_id := get_cellid(x_topl = x_topl, y_topl = y_topl,
-                                 x_coord = x_utm, y_coord = y_utm,
-                                 ncol = ncol(rast), nrow = nrow(rast), res_m = 1000)]
+    return(template)
 
-    pop <- test[, .(pop = sum(pop, na.rm = TRUE),
-                    npoints = .N), by = cell_id]
-    coords_rast <- coordinates(rast)
-
-    # Last step = transform the utm coords back to lat & long
-    pop[, c("x_cell", "y_cell") := data.frame(coords_rast[cell_id, ])]
-    pop[, c("long_cell", "lat_cell") := as.data.frame(
-      rgdal::project(cbind(x_cell, y_cell),  proj = as.character(crs(rast)), inv = TRUE))]
-    pop
   }
 
-# then aggregate them to a unified raster (together)
-mada_rast <- raster(shape)
-res(mada_rast) <- res(pop1)*10
-values(mada_rast) <- NA
 
-# Is this slow?
-pop1_reproj[, new_cell := cellFromXY(mada_rast,
-                                     cbind(long_cell, lat_cell))]
-out <- pop1_reproj[, .(pop = sum(pop, na.rm = TRUE)), by = new_cell]
-mada_rast[out$new_cell] <- out$pop
+}
+
+resample_fun <- function(pop, template, parallel, estimate_time) {
+
+  bs <- blockSize(pop)
+
+  end_cell <- bs$row * ncol(pop)
+  start_cell <- end_cell - end_cell[1] + 1
+  end_cell <- start_cell + bs$nrows*ncol(pop) - 1
+
+  `%myinfix%` <- ifelse(parallel, `%dopar%`, `%do%`)
+
+  if(!estimate_time) chnks <- length(start_cell) else chnks <- 1
+
+  ts <- system.time({
+    out <-
+      foreach(i = seq_len(chnks),
+              .combine = rbind,
+              .export = c('data.table', 'raster')) %myinfix% {
+
+                new_id <- raster::cellFromXY(template,
+                                             raster::xyFromCell(pop, cell = start_cell[i]:end_cell[i]))
+                pop_vals <- raster::getValues(pop, row = bs$row[i], nrows = bs$nrows[i])
+                inds <- !is.na(pop_vals)
+                new_id <- new_id[inds]
+                pop_vals <- pop_vals[inds]
+
+                if(sum(pop_vals, na.rm = TRUE) > 0) {
+
+                  out <- data.table(pop_vals, new_id)[, sum(pop_vals, na.rm = TRUE),
+                                                      keyby = new_id]
+                } else {
+                  out <- NULL
+                }
+                out
+              }
+  })
+
+  if(estimate_time) return(ts["elapsed"] * bs$n) else return(out)
+
+}
+
+compare_pop <- function(pops, res_degrees = 30/3600,
+                        parallel = FALSE, estimate_time = FALSE) {
+
+  # Is pops a list of rasters?
+  if(!is.list(pops)) stop("Pops should be a list of rasters.")
+  if(!all_raster(pops)) stop("Not all list elements are rasters.")
+
+  # create template
+  template <- make_template(pops, res_degrees)
+  nlayers <- length(pops)
+  popcomp <- vector("list", nlayers)
+
+  # replace them with the new resampled raster
+  for(i in seq_len(nlayers)) {
+    popcomp[[i]] <- resample_to_template(pops[[i]], template, parallel,
+                                         estimate_time)
+  }
+
+  if(estimate_time) {
+    message(paste("It will take approximately",
+                  sum(unlist(popcomp)), "seconds to complete the full job serially",
+                  "(to run it set estimate_time = FALSE."))
+  } else {
+    # make a raster brick
+    popcomp <- brick(popcomp)
+    return(popcomp)
+  }
+}
+
+all_longlat <- function(pops) {
+
+  # are all rasters in lat long?
+  all(unlist(lapply(pops, raster::isLonLat)))
+
+}
+
+all_raster <- function(pops) {
+
+  # are all rasters in lat long?
+  all(unlist(lapply(pops, function(x) inherits(x, "RasterLayer"))))
+
+}
 
 
-# Alternatively resample to an aggregated raster (just one)
-# Usin over
+
+
