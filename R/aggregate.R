@@ -1,3 +1,14 @@
+#' Title
+#'
+#' @param brick brick of pops
+#' @param sf sf object
+#' @param max_adjacent window to look at when matching to non Nas
+#'
+#' @return an sf object
+#' @export
+#' @import sf raster data.table fasterize
+#'
+#'
 aggregate_to_shp <- function(brick, sf, max_adjacent = 100) {
 
   sf$id <- 1:nrow(sf)
@@ -31,25 +42,18 @@ aggregate_to_shp <- function(brick, sf, max_adjacent = 100) {
 
 }
 
-# Match to closest nonNA
-
-# for mismatch NA ones get the cell id
-# then get 1 away if non NA then keep
-# if not non NA then keep going N away
-#' Create temporary pop raster with pops matched to non-NA cell
+#' Match to closest nonNA
+#'
 #' Matches cells in pop raster which do not have a match to the friction surface
 #' to nearest cell that does have a match to the friction surface. Mainly issue with coastal
 #' populations.
 #'
-#' @param cell_ids
-#' @param to_match
-#' @param max_adjacent
+#' @param cell_ids NA cells
+#' @param to_match fasterized raster
+#' @param max_adjacent max window to look out
 #'
-#' @import data.table
-#' @import raster
-#'
-#' Manageably sized search (could do 1:10, 11:20 chunked and based on length of missing)
-#' Try w/ 1e5 chunks
+#' @import data.table raster
+#' @keywords interal
 #'
 match_nearest <- function(cell_ids, to_match, max_adjacent = 100) {
 

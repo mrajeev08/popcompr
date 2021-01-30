@@ -1,13 +1,11 @@
 #' Title
 #'
-#' @param pop1
-#' @param pop2
-#' @param res_degrees
+#' @param res_degrees resolution in degrees
+#' @param pops list of pop rasters
 #'
-#' @return
-#' @export
-#' @import raster
-#' @examples
+#' @return a raster
+#' @import raster data.table
+#' @keywords internal
 #'
 #' To do: check crs here too? (just in case)
 #'
@@ -28,6 +26,18 @@ make_template <- function(pops, res_degrees) {
 
 }
 
+#' Title
+#'
+#' @param pop pop raster
+#' @param template template to resample to
+#' @param parallel run parallel
+#' @param estimate_time estimate time?
+#'
+#' @return a data.table or time estimate
+#'
+#' @import raster data.table
+#' @keywords internal
+#'
 resample_to_template <- function(pop, template, parallel,
                                  estimate_time) {
 
@@ -57,6 +67,15 @@ resample_to_template <- function(pop, template, parallel,
 
 
 }
+
+#' Title
+#'
+#' @inheritParams resample_to_template
+#' @param estimate_time
+#'
+#' @return a data.table or time estimate
+#' @import raster data.table foreach
+#' @keywords internal
 
 resample_fun <- function(pop, template, parallel, estimate_time) {
 
@@ -98,6 +117,15 @@ resample_fun <- function(pop, template, parallel, estimate_time) {
 
 }
 
+#' Title
+#'
+#' @inheritParams resample_to_template
+#' @inheritParams make_template
+#'
+#' @return a raster brick
+#' @export
+#' @import raster data.table
+#'
 compare_pop <- function(pops, res_degrees = 30/3600,
                         parallel = FALSE, estimate_time = FALSE) {
 
@@ -127,19 +155,6 @@ compare_pop <- function(pops, res_degrees = 30/3600,
   }
 }
 
-all_longlat <- function(pops) {
-
-  # are all rasters in lat long?
-  all(unlist(lapply(pops, raster::isLonLat)))
-
-}
-
-all_raster <- function(pops) {
-
-  # are all rasters in lat long?
-  all(unlist(lapply(pops, function(x) inherits(x, "RasterLayer"))))
-
-}
 
 
 

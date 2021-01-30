@@ -32,7 +32,7 @@
 #   scale_fill_distiller(direction = 1, trans = "log",
 #                        labels = function(x) round(x, -1))
 #
-# # interactive plots? (very slow, could try d3?)
+# interactive plots? (very slow, could try d3?)
 # plot_ly(popcomp, x = ~x, y = ~y, z = ~diff) %>%
 #   add_heatmap()
 #
