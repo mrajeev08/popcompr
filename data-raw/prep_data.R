@@ -14,12 +14,8 @@ usethis::use_data(lesotho_fb_2019, overwrite = TRUE)
 # Get available data sets
 out <- httr::GET(glue::glue("https://www.geoboundaries.org/gbRequest.html?", "ISO=ALL"))
 out <- jsonlite::fromJSON(rawToChar(out$content))
-out$download <- as.list(out$gjDownloadURL)
 out %>%
   select(iso_code = boundaryISO, year = boundaryYear, admin_level = boundaryType,
-         source = `boundarySource-1`, license = licenseDetail,
-         download = gjDownloadURL) %>%
-  rowwise %>%
-  mutate(download = as.list(download)) -> iso_codes
+         source = `boundarySource-1`, license = licenseDetail) -> iso_codes
 
 usethis::use_data(iso_codes, overwrite = TRUE)
