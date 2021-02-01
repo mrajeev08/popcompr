@@ -2,7 +2,7 @@
 % Please edit documentation in R/compare.R
 \name{compare_pop}
 \alias{compare_pop}
-\title{Title}
+\title{Compare population rasters at pixel level}
 \usage{
 compare_pop(
   pops,
@@ -24,5 +24,5 @@ compare_pop(
 a raster brick
 }
 \description{
-Title
+Compare population rasters at pixel level
 }

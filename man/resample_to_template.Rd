@@ -2,7 +2,7 @@
 % Please edit documentation in R/compare.R
 \name{resample_to_template}
 \alias{resample_to_template}
-\title{Title}
+\title{Resample pop rasters to the template}
 \usage{
 resample_to_template(pop, template, parallel, estimate_time)
 }
@@ -19,6 +19,6 @@ resample_to_template(pop, template, parallel, estimate_time)
 a data.table or time estimate
 }
 \description{
-Title
+Resample pop rasters to the template
 }
 \keyword{internal}

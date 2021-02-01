@@ -2,7 +2,7 @@
 % Please edit documentation in R/compare.R
 \name{make_template}
 \alias{make_template}
-\title{Title}
+\title{Make a template}
 \usage{
 make_template(pops, res_degrees)
 }
@@ -12,10 +12,10 @@ make_template(pops, res_degrees)
 \item{res_degrees}{resolution in degrees}
 }
 \value{
-a raster
+a raster template
 }
 \description{
-Title
+Make a template
 }
 \keyword{(just}
 \keyword{To}

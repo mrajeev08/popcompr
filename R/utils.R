@@ -1,10 +1,9 @@
-#' Title
+#' All items in list in Long Lat coordinateS?
 #'
 #' @param pops list of rasters
 #'
 #' @return boolean
 #' @import raster
-#' @keywords internal
 
 all_longlat <- function(pops) {
 
@@ -13,13 +12,12 @@ all_longlat <- function(pops) {
 
 }
 
-#' Title
+#' All items in list raster?
 #'
 #' @param pops list of rasters
 #'
 #' @return boolean
 #' @import raster
-#' @keywords internal
 
 all_raster <- function(pops) {
 

@@ -1,10 +1,10 @@
-#' Title
+#' Aggregate population rasters to a shapefile
 #'
 #' @param brick brick of pops
-#' @param sf sf object
-#' @param max_adjacent window to look at when matching to non Nas
+#' @param sf sf object (shapefile with country admin units)
+#' @param max_adjacent window to look at when matching cells with a population value, but no associated polygon id
 #'
-#' @return an sf object
+#' @return an sf object with columns for each layer in the raster brick
 #' @export
 #' @import sf raster data.table fasterize
 #'
@@ -42,18 +42,18 @@ aggregate_to_shp <- function(brick, sf, max_adjacent = 100) {
 
 }
 
-#' Match to closest nonNA
+#' Match to closest non-NA cell
 #'
-#' Matches cells in pop raster which do not have a match to the friction surface
-#' to nearest cell that does have a match to the friction surface. Mainly issue with coastal
-#' populations.
+#' Matches cells in pop raster which do not have a match to a shapefile feature
+#' to nearest cell that does have a match. Mainly issue with coastal
+#' populations or shapefiles with holes.
 #'
-#' @param cell_ids NA cells
-#' @param to_match fasterized raster
-#' @param max_adjacent max window to look out
+#' @param cell_ids cells with NA values for shapefile feature
+#' @param to_match raster with associated values from shapefile
+#' @param max_adjacent max cell window to look for nearest non-NA cells
 #'
 #' @import data.table raster
-#' @keywords interal
+#' @keywords internal
 #'
 match_nearest <- function(cell_ids, to_match, max_adjacent = 100) {
 

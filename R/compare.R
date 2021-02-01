@@ -1,9 +1,9 @@
-#' Title
+#' Make a template
 #'
 #' @param res_degrees resolution in degrees
 #' @param pops list of pop rasters
 #'
-#' @return a raster
+#' @return a raster template
 #' @import raster data.table
 #' @keywords internal
 #'
@@ -26,7 +26,7 @@ make_template <- function(pops, res_degrees) {
 
 }
 
-#' Title
+#' Resample pop rasters to the template
 #'
 #' @param pop pop raster
 #' @param template template to resample to
@@ -68,7 +68,7 @@ resample_to_template <- function(pop, template, parallel,
 
 }
 
-#' Title
+#' Resample function
 #'
 #' @inheritParams resample_to_template
 #' @param estimate_time
@@ -117,7 +117,7 @@ resample_fun <- function(pop, template, parallel, estimate_time) {
 
 }
 
-#' Title
+#' Compare population rasters at pixel level
 #'
 #' @inheritParams resample_to_template
 #' @inheritParams make_template

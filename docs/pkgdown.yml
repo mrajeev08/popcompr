@@ -3,16 +3,5 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   popcompr: popcompr.html
-last_built: 2021-02-01T04:55Z
-reference:
-- title: Functions
-- contents:
-  - compare_pop
-  - aggregate_to_shp
-  - get_country_shape
-- title: Internal Functions
-- contents:
-  - has_keyword("internal")
-- title: Datasets
-- contents:
-  - has_keyword("dataset")
+last_built: 2021-02-01T05:20Z
+

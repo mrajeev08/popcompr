@@ -1,8 +1,8 @@
 ---
-title: "popcompr"
+title: "An introduction to popcompr"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{popcompr}
+  %\VignetteIndexEntry{An introduction to popcompr}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -13,22 +13,11 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-# popcompr
 
-The package `popcompr` is an R package to make comparing different high resolution population datasets for humanitarian and research purposes. It is under active development and has not been released, but the code is available through a GPL3 license.
+`popcompr` is an R package to make it easier to compare different high resolution population datasets for humanitarian and research purposes. It is under active development and has not been released, but the code is available through a GPL3 license.
 
-## An example comparing 2019 population estimates for Lesotho from World Pop & Facebook/CIESIN
-Included in the package is a minimal working example for the country of Lesotho. 
-
-### Installation
-
-Install the package from github:
-```{r install}
-remotes::install_github("mrajeev08/popcompr")
-```
-
-### Compare populations at the pixel level
-`lesotho_wp_2019` and `lesotho_fb_2019` are included in the package.
+### An example comparing 2019 population estimates for Lesotho from World Pop & Facebook/CIESIN
+Included in the package are files to reproduce a minimal working example for the country of Lesotho. `lesotho_wp_2019` and `lesotho_fb_2019` are included in the package (use `?lesotho_wp_2019` for more details).
 
 #### First load the necessary libraries 
 + some extras for plotting (plotly & ggplot2)
@@ -167,4 +156,4 @@ ggplot(les_shape) +
 ```
 
 ### User specific inputs
-You can use your own raster and shapefile inputs, they just need to be in the same coordinate system/projection as each other! When using the shapefiles from geoBoundaries, input rasters must be in WGS84 (lat/long) coordinate system.
+You can use your own raster and shapefile inputs, they just need to be in the WGS84 (lat/long) coordinate system.

@@ -7,7 +7,8 @@
 #' @param type the type of shapefile. Geoboundaries have simplified and unsimplified,
 #'  and standardized vs. unstandardized (and combinations thereof) available
 #'  for use. See the api documentation for more details: \url{https://www.geoboundaries.org/api.html}
-#'
+#' @param timeout numeric in seconds, the amount of time to wait for the httr request, default is 2, set higher
+#'  if your connection is slower (max is set to 1 min for safety)
 #' @return a shapefile as an sf object
 #' @export
 #'
@@ -17,6 +18,8 @@
 #'
 get_country_shape <- function(country_iso, admin_level, type = "SSCU",
                               timeout = 2) {
+
+  timeout <- ifelse(timeout > 60, 60, timeout)
 
   url <- glue::glue("https://www.geoboundaries.org/gbRequest.html?",
                     "ISO={country_iso}",

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>List of country iso codes. — iso_codes • popcompr</title>
+<title>Data frame of available datasets through the geoBoundaries API. — iso_codes • popcompr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="List of country iso codes. — iso_codes" />
-<meta property="og:description" content="List of country iso codes." />
+<meta property="og:title" content="Data frame of available datasets through the geoBoundaries API. — iso_codes" />
+<meta property="og:description" content="Data frame of available datasets through the geoBoundaries API." />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">popcompr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -92,7 +92,12 @@
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/mrajeev08/popcompr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -106,13 +111,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>List of country iso codes.</h1>
-    
+    <h1>Data frame of available datasets through the geoBoundaries API.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mrajeev08/popcompr/blob/master/R/data.R'><code>R/data.R</code></a></small>
     <div class="hidden name"><code>iso_codes.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>List of country iso codes.</p>
+    <p>Data frame of available datasets through the geoBoundaries API.</p>
     </div>
 
     <pre class="usage"><span class='va'>iso_codes</span></pre>
@@ -120,15 +125,19 @@
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A data frame with 246 rows and 2 variables:</p><dl>
+    <p>A data frame with 644 rows and 6 variables:</p><dl>
 <dt>iso_code</dt><dd><p>the three letter iso code for each country, see the source url for more information</p></dd>
+<dt>year</dt><dd><p>the year of the dataset</p></dd>
+<dt>admin_level</dt><dd><p>the admin level of the available dataset</p></dd>
+<dt>source</dt><dd><p>the source of the dataset</p></dd>
+<dt>license</dt><dd><p>the license of the dataset</p></dd>
 <dt>country</dt><dd><p>the country name</p></dd>
 
 </dl>
 
     <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
-    <p><a href='https://unstats.un.org/unsd/tradekb/knowledgebase/country-code'>https://unstats.un.org/unsd/tradekb/knowledgebase/country-code</a></p>
+    <p><a href='https://www.geoboundaries.org/api.html'>https://www.geoboundaries.org/api.html</a></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

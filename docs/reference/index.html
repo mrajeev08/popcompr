@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">popcompr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -91,7 +91,12 @@
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/mrajeev08/popcompr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -119,7 +124,7 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <h2 id="section-functions" class="hasAnchor"><a href="#section-functions" class="anchor"></a>Functions</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -131,27 +136,77 @@
       <tr>
         
         <td>
-          <p><code><a href="aggregate_to_shp.html">aggregate_to_shp()</a></code> </p>
+          <p><code><a href="compare_pop.html">compare_pop()</a></code> </p>
         </td>
-        <td><p>Title</p></td>
+        <td><p>Compare population rasters at pixel level</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="compare_pop.html">compare_pop()</a></code> </p>
+          <p><code><a href="aggregate_to_shp.html">aggregate_to_shp()</a></code> </p>
         </td>
-        <td><p>Title</p></td>
+        <td><p>Aggregate population rasters to a shapefile</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="get_country_shape.html">get_country_shape()</a></code> </p>
         </td>
         <td><p>Get country shapefile from geoboundaries</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-internal-functions" class="hasAnchor"><a href="#section-internal-functions" class="anchor"></a>Internal Functions</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="make_template.html">make_template()</a></code> </p>
+        </td>
+        <td><p>Make a template</p></td>
       </tr><tr>
+        
+        <td>
+          <p><code><a href="match_nearest.html">match_nearest()</a></code> </p>
+        </td>
+        <td><p>Match to closest non-NA cell</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="resample_fun.html">resample_fun()</a></code> </p>
+        </td>
+        <td><p>Resample function</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="resample_to_template.html">resample_to_template()</a></code> </p>
+        </td>
+        <td><p>Resample pop rasters to the template</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-datasets" class="hasAnchor"><a href="#section-datasets" class="anchor"></a>Datasets</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
         
         <td>
           <p><code><a href="iso_codes.html">iso_codes</a></code> </p>
         </td>
-        <td><p>List of country iso codes.</p></td>
+        <td><p>Data frame of available datasets through the geoBoundaries API.</p></td>
       </tr><tr>
         
         <td>
@@ -164,12 +219,6 @@
           <p><code><a href="lesotho_wp_2019.html">lesotho_wp_2019</a></code> </p>
         </td>
         <td><p>Population counts for Lesotho from WorldPop for the year 2019.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="match_nearest.html">match_nearest()</a></code> </p>
-        </td>
-        <td><p>Match to closest nonNA</p></td>
       </tr>
     </tbody>
     </table>

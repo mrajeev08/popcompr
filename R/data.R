@@ -1,12 +1,17 @@
-#' List of country iso codes.
+#' Data frame of available datasets through the geoBoundaries API.
 #'
-#' @format A data frame with 246 rows and 2 variables:
+#' @format A data frame with 644 rows and 6 variables:
 #' \describe{
 #'   \item{iso_code}{the three letter iso code for each country, see the source url for more information}
+#'   \item{year}{the year of the dataset}
+#'   \item{admin_level}{the admin level of the available dataset}
+#'   \item{source}{the source of the dataset}
+#'   \item{license}{the license of the dataset}
 #'   \item{country}{the country name}
 #' }
 #'
-#'@source \url{https://unstats.un.org/unsd/tradekb/knowledgebase/country-code}
+#'@source \url{https://www.geoboundaries.org/api.html}
+#'@keywords dataset
 #'
 "iso_codes"
 
@@ -19,6 +24,7 @@
 #'  See source url for more details.
 #'
 #'@source \url{https://data.humdata.org/dataset/highresolutionpopulationdensitymaps-lso}
+#'@keywords dataset
 #'
 "lesotho_fb_2019"
 
@@ -30,5 +36,6 @@
 #'  See source url for more details.
 #'
 #'@source \url{https://data.humdata.org/dataset/worldpop-population-counts-for-lesotho}
+#'@keywords dataset
 #'
 "lesotho_wp_2019"

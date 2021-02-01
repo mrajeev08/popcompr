@@ -19,4 +19,4 @@ lesotho_wp_2019
 \description{
 Population counts for Lesotho from WorldPop for the year 2019.
 }
-\keyword{datasets}
+\keyword{dataset}

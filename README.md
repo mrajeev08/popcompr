@@ -1,102 +1,86 @@
-
 # popcompr
 
-<!-- badges: start -->
-<!-- badges: end -->
-
-The goal of popcompr is to ...
+`popcompr` is an R package to make it easier  different high resolution population datasets for humanitarian and research purposes. It is under active development and has not been released, but the code is available through a [GPL3 license](LICENSE.md). See the documentation at [https://mrajeev08.github.io/popcompr/](https://mrajeev08.github.io/popcompr/).
 
 ## Installation
 
-You can install the released version of popcompr from [CRAN](https://CRAN.R-project.org) with:
+You can install the development version of `popcompr` using the `remotes` package:
 
 ``` r
-install.packages("popcompr")
+remotes::install_github("mrajeev08/popcompr")
 ```
 
-## Example
+## Example using data from Lesotho
 
-This is a basic example which shows you how to solve a common problem:
+Included in the package are two datasets on population estimates in Lesotho (simply choosing Lesotho because its small) downloaded from [HDX](https://data.humdata.org). See `?lesotho_wp_2019` and `?lesotho_fb_2019` for more details. 
+
+This example compares these two datasets at a dedault resolution of 0.0833 degrees (or approximately 1 km<sup>2</sup> at the equator):
 
 ``` r
 library(popcompr)
-## basic example code
+
+# comparing at pixel level with data included in the package
+pop_list <- list(lesotho_wp_2019, lesotho_fb_2019)
+compare_pop(pop_list, parallel = FALSE_
 ```
 
-## Notes and to do
+You can also compare population estimates at the administrative level. Access to country shapefiles is provided through a wrapper to the [geoBoundaries API](https://www.geoboundaries.org/api.html). 
+To see available datasets, use `View(iso_codes`)`. An example for Lesotho:
 
-Functions:
-1. Function to create the raster to resample to
-2. Function to resample the pop data sets to the lower res scale (chunked or not) (parallelized)
-3. Function to compare the population data sets
-- put in two rasters
-- make the skeleton at appropriate resolution
-- (if still not within memory tell the user? Or make it chunkable/memsafe as well)
-- resample and brick them/stack them together
-- also need to make sure to track lost people (did everyone get matched?)
-- Option to compare N rasters
-- digg plot = facet & no maps?
+- Get admin shapefile
+``` r
+# Find the right iso code & see which admin levels are available
+dplyr::filter(iso_codes, grepl("Les", country))
+les_shape <- get_country_shape(country_iso = "LSO", admin_level = 2)
 
-Issues to think through
-- parallelizing
-- when not to chunk a threshold for small stuff? benchmark to compare
-- Working in long/lat make this explicit & check it
-- Make sure extents are somewhat similar
+```
 
-Second set
-1. Function to aggregate the raster brick to an sf file using fasterize!
-2. Include a way to match coastlines/missing vals, as well
-3. Make comparisons same way (spatially & xy coords)
+- And then aggregate the population datasets to the admin unit:
+``` r
+# get admin level comparison
+les_shape <- aggregate_to_shp(brick = exe, sf = les_shape, max_adjacent = 100)
+```
 
-Autoplot methods
-1. for both raster and admin = static/dynamic + plot spatial diff & also xy corr
-  - static plot
-  - dynamic plot
-  
-Document & write up all above & share as package on github with Fleur ------------------
+See the [documentation](https://mrajeev08.github.io/popcompr/) for examples of vizualizations. 
 
-API infrastructure
-1. country shapefiles from geoboundaries
-2. raster datasets from hdx or other api? too slow?
-3. options for user to be able to input either pop datasets or shapefiles (with errors when extents don't overlap!)
-Easiest way is to use a data file with appropriate urls
-use the data contract bit to name things appropriately
-30 arc seconds in WGS84 if possible
-provider | country | country_code | year | value | projection | resolution | file_url | file_size | info_url
-so when you download
-you choose a folder to cache things to
-you choose a country & a year and you get the available data sets
-you choose a value
-always download the file! Because you don't actually know peoples mem reqs.?
-instructions for folks to submit a pull request = hosted files add to csv in data
-popgrid
-grid3
-other orgs
-Ones on hdx:
-Grid 3
-Facebook/CEISIN
-WorlPop
-using rhdx style download (for facebook otherwise wont work!)
-https://github.com/dickoa/rhdx/blob/master/R/resource.R
-Ones on own site (but open):
-Global Human Settlement Layer
-https://ghsl.jrc.ec.europa.eu/download.php?ds=pop
-use country extent and clip the larger file?
-if multiple urls for a single tile have a helper function to pull that in
-Ones where you need an account:
-GPW 4
-GRUMP 3
-Oakridge LANDSCAN: https://landscan.ornl.gov
+Here are also some great resources on gridded population datasets from CIESIN at Columbia University: [https://sedac.ciesin.columbia.edu/mapping/popgrid](https://sedac.ciesin.columbia.edu/mapping/popgrid).
 
-- Unit tests (to do / figure out)
+## Roadmap
 
-Vignettes -------------------------------------------------------------------
-- How to query the api & download files (keeping in mind size issues)
-- How to compare @ raster scale
-- How to compare @ admin scale
-- Use user specific datasets (rasters & shapefiles & if things will catch it if not the same extent!)
+This package is in it's very starting stages. Here's the planned/proposed dev.
 
-- Reference to pop grid: https://www.popgrid.org/data-docs-table1
+### Little fixes
+- managing imports from `data.table` & `raster` (including conflict with `shift`)
+- supress or manage warnings on `data.table` with `gmin` in `match_nearest`
+- generally refactor `match_nearest` to be faster and cleaner
+- double check where people go missing (is it because of holes? technically extents should be merged and should cover all the raster inputs)
+- better guidance on resolution and rationale for default 
+- rename `iso_codes` to geoBoundaries_data
+- option to pass a field to aggregate to (i.e. if you download adm3 shapefile, make it easier to aggregate to 
+admin 2/1?)
+
+### Refactoring existing functions
+- use a unified naming system so that you can programitcally decide what to plot and also parse labels (i.e. data contract)
+- right now, defaults to a memory safe aggregation method using chunks regardless of raster size.
+  - benchmark to see when single calls are faster
+  - programatically decide when to do it the memory safe way (using `raster::canProcessInMemory`)
+- warn/error if extents don't match by at least xx% between population rasters or shapefiles
+- don't make the user parallelize, but instead use future?
+- multithreaded downloads?
+- write unit tests!
+
+### Expanding code base
+- autoplot functions (use S3 classes)? For static/interactive plots comparing up to N pop
+- API access to available population datasets by country:
+  - World Pop (has an API)
+  - Facebook/CIESIN (no API but on hdx)
+  - grid3 (no API but on hdx)
+  - GPW4 (no API and requires registration for download)
+  - LANDSCAN (no API and requires registration for download)
+  - see [https://www.popgrid.org/data-docs-table1](https://www.popgrid.org/data-docs-table1) for more details on all datasets
+  - https://github.com/dickoa/rhdx for example of accessing files through hdx api
+- option to crop files to an extent and then do the comparison?
+
 
 
 

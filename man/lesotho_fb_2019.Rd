@@ -19,4 +19,4 @@ lesotho_fb_2019
 \description{
 Population counts for Lesotho from Facebook/CIESIN for the year 2019.
 }
-\keyword{datasets}
+\keyword{dataset}

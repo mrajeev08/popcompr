@@ -2,20 +2,20 @@
 % Please edit documentation in R/aggregate.R
 \name{match_nearest}
 \alias{match_nearest}
-\title{Match to closest nonNA}
+\title{Match to closest non-NA cell}
 \usage{
 match_nearest(cell_ids, to_match, max_adjacent = 100)
 }
 \arguments{
-\item{cell_ids}{NA cells}
+\item{cell_ids}{cells with NA values for shapefile feature}
 
-\item{to_match}{fasterized raster}
+\item{to_match}{raster with associated values from shapefile}
 
-\item{max_adjacent}{max window to look out}
+\item{max_adjacent}{max cell window to look for nearest non-NA cells}
 }
 \description{
-Matches cells in pop raster which do not have a match to the friction surface
-to nearest cell that does have a match to the friction surface. Mainly issue with coastal
-populations.
+Matches cells in pop raster which do not have a match to a shapefile feature
+to nearest cell that does have a match. Mainly issue with coastal
+populations or shapefiles with holes.
 }
-\keyword{interal}
+\keyword{internal}

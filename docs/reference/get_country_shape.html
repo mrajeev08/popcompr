@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">popcompr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -92,7 +92,12 @@
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/mrajeev08/popcompr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -107,7 +112,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get country shapefile from geoboundaries</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/mrajeev08/popcompr/blob/master/R/get_data.R'><code>R/get_data.R</code></a></small>
     <div class="hidden name"><code>get_country_shape.Rd</code></div>
     </div>
 
@@ -115,7 +120,7 @@
     <p>Get country shapefile from geoboundaries</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_country_shape</span><span class='op'>(</span><span class='va'>country_iso</span>, <span class='va'>admin_level</span>, type <span class='op'>=</span> <span class='st'>"SSCU"</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_country_shape</span><span class='op'>(</span><span class='va'>country_iso</span>, <span class='va'>admin_level</span>, type <span class='op'>=</span> <span class='st'>"SSCU"</span>, timeout <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -135,6 +140,11 @@ then 1, 2, 3). Note that not all admin levels are available</p></td>
       <td><p>the type of shapefile. Geoboundaries have simplified and unsimplified,
 and standardized vs. unstandardized (and combinations thereof) available
 for use. See the api documentation for more details: <a href='https://www.geoboundaries.org/api.html'>https://www.geoboundaries.org/api.html</a></p></td>
+    </tr>
+    <tr>
+      <th>timeout</th>
+      <td><p>numeric in seconds, the amount of time to wait for the httr request, default is 2, set higher
+if your connection is slower (max is set to 1 min for safety)</p></td>
     </tr>
     </table>
 

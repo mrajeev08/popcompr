@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Match to closest nonNA — match_nearest • popcompr</title>
+<title>Match to closest non-NA cell — match_nearest • popcompr</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,10 @@
 
 
 
-<meta property="og:title" content="Match to closest nonNA — match_nearest" />
-<meta property="og:description" content="Matches cells in pop raster which do not have a match to the friction surface
-to nearest cell that does have a match to the friction surface. Mainly issue with coastal
-populations." />
+<meta property="og:title" content="Match to closest non-NA cell — match_nearest" />
+<meta property="og:description" content="Matches cells in pop raster which do not have a match to a shapefile feature
+to nearest cell that does have a match. Mainly issue with coastal
+populations or shapefiles with holes." />
 
 
 
@@ -74,7 +74,7 @@ populations." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">popcompr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -94,7 +94,12 @@ populations." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/mrajeev08/popcompr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -108,15 +113,15 @@ populations." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Match to closest nonNA</h1>
-    
+    <h1>Match to closest non-NA cell</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mrajeev08/popcompr/blob/master/R/aggregate.R'><code>R/aggregate.R</code></a></small>
     <div class="hidden name"><code>match_nearest.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Matches cells in pop raster which do not have a match to the friction surface
-to nearest cell that does have a match to the friction surface. Mainly issue with coastal
-populations.</p>
+    <p>Matches cells in pop raster which do not have a match to a shapefile feature
+to nearest cell that does have a match. Mainly issue with coastal
+populations or shapefiles with holes.</p>
     </div>
 
     <pre class="usage"><span class='fu'>match_nearest</span><span class='op'>(</span><span class='va'>cell_ids</span>, <span class='va'>to_match</span>, max_adjacent <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span></pre>
@@ -126,15 +131,15 @@ populations.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>cell_ids</th>
-      <td><p>NA cells</p></td>
+      <td><p>cells with NA values for shapefile feature</p></td>
     </tr>
     <tr>
       <th>to_match</th>
-      <td><p>fasterized raster</p></td>
+      <td><p>raster with associated values from shapefile</p></td>
     </tr>
     <tr>
       <th>max_adjacent</th>
-      <td><p>max window to look out</p></td>
+      <td><p>max cell window to look for nearest non-NA cells</p></td>
     </tr>
     </table>
 

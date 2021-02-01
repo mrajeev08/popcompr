@@ -1,14 +1,15 @@
 Package: popcompr
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Compare gridded population estimates
+Version: 0.1.0
 Authors@R: 
     person(given = "Malavika",
            family = "Rajeev",
            role = c("aut", "cre"),
            email = "mrajeev@princeton.edu",
            comment = c(ORCID = "0000-0001-6030-4995"))
-Description: What the package does (one paragraph).
+Description: This package makes comparing different gridded population datasets at the pixel level and at the admin level easier. These datasets are commonly used in research and humanitarian contexts, and this package allows users compare datasets, conduct sensitivity analyses, etc. 
 License: GPL-3
+URL: https://mrajeev08.github.io/popcompr, https://github.com/mrajeev08/popcompr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

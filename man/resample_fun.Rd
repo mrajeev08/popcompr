@@ -2,7 +2,7 @@
 % Please edit documentation in R/compare.R
 \name{resample_fun}
 \alias{resample_fun}
-\title{Title}
+\title{Resample function}
 \usage{
 resample_fun(pop, template, parallel, estimate_time)
 }
@@ -19,6 +19,6 @@ resample_fun(pop, template, parallel, estimate_time)
 a data.table or time estimate
 }
 \description{
-Title
+Resample function
 }
 \keyword{internal}

@@ -2,20 +2,20 @@
 % Please edit documentation in R/aggregate.R
 \name{aggregate_to_shp}
 \alias{aggregate_to_shp}
-\title{Title}
+\title{Aggregate population rasters to a shapefile}
 \usage{
 aggregate_to_shp(brick, sf, max_adjacent = 100)
 }
 \arguments{
 \item{brick}{brick of pops}
 
-\item{sf}{sf object}
+\item{sf}{sf object (shapefile with country admin units)}
 
-\item{max_adjacent}{window to look at when matching to non Nas}
+\item{max_adjacent}{window to look at when matching cells with a population value, but no associated polygon id}
 }
 \value{
-an sf object
+an sf object with columns for each layer in the raster brick
 }
 \description{
-Title
+Aggregate population rasters to a shapefile
 }

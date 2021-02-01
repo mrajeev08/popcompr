@@ -4,7 +4,7 @@
 \alias{get_country_shape}
 \title{Get country shapefile from geoboundaries}
 \usage{
-get_country_shape(country_iso, admin_level, type = "SSCU")
+get_country_shape(country_iso, admin_level, type = "SSCU", timeout = 2)
 }
 \arguments{
 \item{country_iso}{the three letter code corresponding to the country.
@@ -16,6 +16,9 @@ then 1, 2, 3). Note that not all admin levels are available}
 \item{type}{the type of shapefile. Geoboundaries have simplified and unsimplified,
 and standardized vs. unstandardized (and combinations thereof) available
 for use. See the api documentation for more details: \url{https://www.geoboundaries.org/api.html}}
+
+\item{timeout}{numeric in seconds, the amount of time to wait for the httr request, default is 2, set higher
+if your connection is slower (max is set to 1 min for safety)}
 }
 \value{
 a shapefile as an sf object

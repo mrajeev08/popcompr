@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{all_longlat}
 \alias{all_longlat}
-\title{Title}
+\title{All items in list in Long Lat coordinateS?}
 \usage{
 all_longlat(pops)
 }
@@ -13,6 +13,5 @@ all_longlat(pops)
 boolean
 }
 \description{
-Title
+All items in list in Long Lat coordinateS?
 }
-\keyword{internal}
