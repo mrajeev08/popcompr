@@ -12,10 +12,12 @@ usethis::use_data(lesotho_wp_2019, overwrite = TRUE)
 usethis::use_data(lesotho_fb_2019, overwrite = TRUE)
 
 # Get available data sets
+iso_names <- readr::read_csv("data-raw/iso_country_names.csv")
 out <- httr::GET(glue::glue("https://www.geoboundaries.org/gbRequest.html?", "ISO=ALL"))
 out <- jsonlite::fromJSON(rawToChar(out$content))
 out %>%
   select(iso_code = boundaryISO, year = boundaryYear, admin_level = boundaryType,
-         source = `boundarySource-1`, license = licenseDetail) -> iso_codes
+         source = `boundarySource-1`, license = licenseDetail) %>%
+  left_join(iso_names) -> iso_codes
 
 usethis::use_data(iso_codes, overwrite = TRUE)

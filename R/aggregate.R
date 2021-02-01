@@ -34,7 +34,7 @@ aggregate_to_shp <- function(brick, sf, max_adjacent = 100) {
       print(paste0("warning: ", missing, " people were not matched."))
     }
 
-    sf[, paste0("pop", i)] <- r_dt$pop # is keyed by id so will match to row #
+    sf[, paste0(names(prast))] <- r_dt$pop # is keyed by id so will match to row #
   }
 
   # return sf

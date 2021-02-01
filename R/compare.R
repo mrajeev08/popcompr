@@ -146,8 +146,7 @@ compare_pop <- function(pops, res_degrees = 30/3600,
 
   if(estimate_time) {
     message(paste("It will take approximately",
-                  sum(unlist(popcomp)), "seconds to complete the full job serially",
-                  "(to run it set estimate_time = FALSE."))
+                  sum(unlist(popcomp)), "seconds to complete the full job serially."))
   } else {
     # make a raster brick
     popcomp <- raster::brick(popcomp)
