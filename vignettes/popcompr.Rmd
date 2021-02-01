@@ -1,5 +1,5 @@
 ---
-title: "popcompr"
+title: "Comparing high resolution population datasets"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{popcompr}
@@ -11,48 +11,153 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>", 
-  eval = FALSE
 )
 ```
 
-```{r setup}
-library(popcompr)
+## An example comparing 2019 population estimates for Lesotho from World Pop & Facebook/CIESIN
+Included in the package is a minimal working example for the country of Lesotho. 
+
+### Installation
+
+Install the package from github:
+```{r install}
+remotes::install_github("mrajeev08/popcompr")
 ```
 
-# Example
+### Compare populations at the pixel level
+`lesotho_wp_2019` and `lesotho_fb_2019` are included in the package.
 
-```{r}
+#### First load the necessary libraries 
++ some extras for plotting (plotly & ggplot2)
+```{r setup}
+library(popcompr)
 library(raster)
 library(data.table)
 library(foreach)
 library(plotly)
+library(ggplot2)
 library(fasterize)
 library(sf)
+```
 
-pop1 <- raster("data-raw/mdg_ppp_2018.tif")
-pop2 <- raster("data-raw/population_mdg_2018-10-01.tif")
-exe <- compare_pop(list(pop1, pop2), parallel = FALSE, estimate_time = TRUE)
+#### Comparing populations at pixel level
 
+You can first get an estimate of the time required to return the comparison:
+```{r}
+pop_list <- list(lesotho_wp_2019, lesotho_fb_2019)
+compare_pop(pop_list, parallel = FALSE, 
+                   estimate_time = TRUE)
+```
 
+It shouldn't take too long by that estimate, but here we'll work through parallelizing. Here, I use the 
+doParallel backend, but other do packages can be used (anything compatible with the `%dopar%` infix in the `foreach` package).
+
+```{r}
 # parallelized example
 library(doParallel)
-cl <- makeCluster(detectCores() - 1)
+cl <- makeCluster(detectCores() - 1) # how many cores do we have available
 registerDoParallel(cl)
 system.time(
-  exe2 <- compare_pop(list(pop1, pop2), parallel = TRUE) # without that arg run it normally
+  # defaults to estimate_time = FALSE & resolution of ~ 1km at equator
+  exe <- compare_pop(pop_list, parallel = TRUE) 
 )
 stopCluster(cl)
 
 ```
 
+`compare_pop` will warn you if any people were not resampled to the comparison grid (this happens sometimes when pops are at the edge of the original raster).
 
+The output is a raster brick with a layer corresponding to each of the input population rasters. We can vizualize and compare the rasters:
+
+##### Map of differences
 ```{r}
-# Admin 2 example
-# Try to get a simplified one? Or plot using leaflet/D3.js
-shape <- httr::GET("https://www.geoboundaries.org/gbRequest.html?ISO=MDG&ADM=ADM2") 
-out <- jsonlite::fromJSON(rawToChar(shape$content))
-mada_shape <- sf::st_read(out$gjDownloadURL)
-mada_shape <- aggregate_to_shp(brick = exe2, sf = mada_shape, max_adjacent = 100)
+comp_dt <- data.table(as.data.frame(exe, xy = TRUE)) # we use data.table as it's easier to 
 
+# transform functions for vizualizing difference
+transform <- function(x) {
+  logged <- log(abs(x) + 1e-6) * sign(x)
+  return(logged)
+}
+inv_trans <- function(x) {
+  inv <- (exp(abs(x)) - 1e-6) * sign(x)
+  return(round(inv, 2))
+}
+
+map_compare <-
+  ggplot(comp_dt) +
+  geom_raster(aes(x = x, y = y, fill = transform(lso_worldpop_2019 - lso_facebook_2019))) +
+  scale_fill_gradient2(labels = inv_trans, 
+                       name = "Difference between \n population estimates") +
+  coord_quickmap()
+map_compare
+
+hex_compare <-
+  ggplot(popcomp) +
+  geom_hex(aes(x = layer.1, y = layer.2), color = "grey") +
+  geom_abline(intercept = 0, slope = 1, linetype = 2, color = "grey") +
+  scale_fill_distiller(direction = 1, trans = "log",
+                       labels = function(x) round(x, -1))
+hex_compare
+```
+
+You can also make these interactive using plotly/ggplotly functions:
+```{r}
+ggplotly(map_compare) 
+ggplotly(hex_compare) 
+```
+
+Check the distribution of differences:
+```{r}
+ggplot(comp_dt) +
+  geom_histogram(aes(x =lso_worldpop_2019 - lso_facebook_2019))
+```
+
+### Comparing at the administrative level
+You can access country shapefiles using `get_country_shape` which will return a shapefile as an `sf` object. These are available through the [geoBoundaries API](), where more documentation can be found on available datasets. In addition, `iso_codes` is a dataset provided in the package to find country codes and available admin levels. 
+```{r}
+# Find the right iso code & see which admin levels are available
+dplyr::filter(iso_codes, grepl("Les", country))
+```
+
+We get the Lesotho shapefile to the admin level 2 (the `type` argument defaults to a simplified shapefile) which is faster for plotting and downloading, but users may prefer unsimplified files for better accuracy (see the geoBoundaries API documentation for more information).
+
+Then we can get the shapefile and then aggregate the population rasters to it:
+```{r}
+les_shape <- get_country_shape(country_iso = "LSO", admin_level = 2)
+
+# Get the shapefile at admin 2
+les_shape <- aggregate_to_shp(brick = exe, sf = les_shape, max_adjacent = 100)
+```
+`aggregate_to_shp` will warn you if grid cell values go unallocated to the shapefile. In the case that many people go missing, you can set max_adjacent higher (this determines how many grid cells to buffer to when looking for the nearest non-NA neighbor), but it may also be wise to check the extent & boundaries of the shapefile vs. the population rasters.
+
+We can vizualize these differences as well:
+```{r}
+map_compare <-
+  ggplot(les_compare) +
+  geom_raster(aes(x = x, y = y, fill = transform(lso_worldpop_2019 - lso_facebook_2019))) +
+  scale_fill_gradient2(labels = inv_trans, 
+                       name = "Difference between \n population estimates") +
+  coord_quickmap()
+map_compare
+
+hex_compare <-
+  ggplot(popcomp) +
+  geom_hex(aes(x = layer.1, y = layer.2), color = "grey") +
+  geom_abline(intercept = 0, slope = 1, linetype = 2, color = "grey") +
+  scale_fill_distiller(direction = 1, trans = "log",
+                       labels = function(x) round(x, -1))
+hex_compare
+```
+
+You can also make these interactive using plotly/ggplotly functions:
+```{r}
+ggplotly(map_compare) 
+ggplotly(hex_compare) 
+```
+
+Check the distribution of differences:
+```{r}
+ggplot(comp_dt) +
+  geom_histogram(aes(x =lso_worldpop_2019 - lso_facebook_2019))
 ```
 

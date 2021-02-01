@@ -16,21 +16,17 @@
 #' les_simple <- get_country_shape(country_iso = "LSO", admin_level = 2)
 #'
 get_country_shape <- function(country_iso, admin_level, type = "SSCU",
-                              timeout = 2) {
+                              iso_codes = popcompr::iso_codes) {
 
-  url <- glue::glue("https://www.geoboundaries.org/gbRequest.html?",
-                    "ISO={country_iso}",
-                    "&ADM=ADM{admin_level}",
-                    "&TYP={type}")
+  file <- iso_codes[iso_codes$iso_code == country_iso &
+              iso_codes$admin_level == glue::glue("ADM{admin_level}"), ]
 
-  out <- httr::GET(url, httr::timeout(timeout))
-  out <- jsonlite::fromJSON(rawToChar(out$content))
-
-  if(is.null(out$gjDownloadURL)) {
-    stop("url is not valid: check country_iso and admin_level.")
+  if(nrow(file) != 1) {
+    stop("Country iso code and admin level are not valid, check the dataset
+         iso_codes included in the package for available files.")
   }
 
-  shape <- sf::st_read(out$gjDownloadURL)
+  shape <- sf::st_read(file$download[[1]])
 
   return(shape)
 
