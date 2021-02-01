@@ -1,5 +1,5 @@
 ---
-title: "Comparing high resolution population datasets"
+title: "popcompr"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{popcompr}
@@ -10,7 +10,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>", 
+  comment = "#>"
 )
 ```
 # popcompr
