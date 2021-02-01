@@ -15,6 +15,9 @@ resample_to_template(pop, template, parallel, estimate_time)
 
 \item{estimate_time}{estimate time?}
 }
+\value{
+a data.table or time estimate
+}
 \description{
 Title
 }

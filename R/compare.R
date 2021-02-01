@@ -150,7 +150,7 @@ compare_pop <- function(pops, res_degrees = 30/3600,
                   "(to run it set estimate_time = FALSE."))
   } else {
     # make a raster brick
-    popcomp <- brick(popcomp)
+    popcomp <- raster::brick(popcomp)
     return(popcomp)
   }
 }

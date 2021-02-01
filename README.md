@@ -59,6 +59,34 @@ API infrastructure
 1. country shapefiles from geoboundaries
 2. raster datasets from hdx or other api? too slow?
 3. options for user to be able to input either pop datasets or shapefiles (with errors when extents don't overlap!)
+Easiest way is to use a data file with appropriate urls
+use the data contract bit to name things appropriately
+30 arc seconds in WGS84 if possible
+provider | country | country_code | year | value | projection | resolution | file_url | file_size | info_url
+so when you download
+you choose a folder to cache things to
+you choose a country & a year and you get the available data sets
+you choose a value
+always download the file! Because you don't actually know peoples mem reqs.?
+instructions for folks to submit a pull request = hosted files add to csv in data
+popgrid
+grid3
+other orgs
+Ones on hdx:
+Grid 3
+Facebook/CEISIN
+WorlPop
+using rhdx style download (for facebook otherwise wont work!)
+https://github.com/dickoa/rhdx/blob/master/R/resource.R
+Ones on own site (but open):
+Global Human Settlement Layer
+https://ghsl.jrc.ec.europa.eu/download.php?ds=pop
+use country extent and clip the larger file?
+if multiple urls for a single tile have a helper function to pull that in
+Ones where you need an account:
+GPW 4
+GRUMP 3
+Oakridge LANDSCAN: https://landscan.ornl.gov
 
 - Unit tests (to do / figure out)
 
@@ -67,6 +95,8 @@ Vignettes -------------------------------------------------------------------
 - How to compare @ raster scale
 - How to compare @ admin scale
 - Use user specific datasets (rasters & shapefiles & if things will catch it if not the same extent!)
+
+- Reference to pop grid: https://www.popgrid.org/data-docs-table1
 
 
 

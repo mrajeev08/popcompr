@@ -14,7 +14,7 @@ aggregate_to_shp(brick, sf, max_adjacent = 100)
 \item{max_adjacent}{window to look at when matching to non Nas}
 }
 \value{
-
+an sf object
 }
 \description{
 Title

@@ -10,7 +10,7 @@ all_raster(pops)
 \item{pops}{list of rasters}
 }
 \value{
-
+boolean
 }
 \description{
 Title

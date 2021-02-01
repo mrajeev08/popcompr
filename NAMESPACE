@@ -2,6 +2,7 @@
 
 export(aggregate_to_shp)
 export(compare_pop)
+export(get_country_shape)
 import(data.table)
 import(fasterize)
 import(foreach)

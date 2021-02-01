@@ -16,7 +16,7 @@ resample_fun(pop, template, parallel, estimate_time)
 \item{estimate_time}{}
 }
 \value{
-
+a data.table or time estimate
 }
 \description{
 Title

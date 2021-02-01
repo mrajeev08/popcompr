@@ -21,7 +21,7 @@ compare_pop(
 \item{estimate_time}{estimate time?}
 }
 \value{
-
+a raster brick
 }
 \description{
 Title

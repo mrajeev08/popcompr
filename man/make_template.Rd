@@ -12,7 +12,7 @@ make_template(pops, res_degrees)
 \item{res_degrees}{resolution in degrees}
 }
 \value{
-
+a raster
 }
 \description{
 Title
