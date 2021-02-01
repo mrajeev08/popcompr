@@ -15,14 +15,21 @@
 #' # Defaults to simplified
 #' les_simple <- get_country_shape(country_iso = "LSO", admin_level = 2)
 #'
-get_country_shape <- function(country_iso, admin_level, type = "SSCU") {
+get_country_shape <- function(country_iso, admin_level, type = "SSCU",
+                              timeout = 2) {
 
   url <- glue::glue("https://www.geoboundaries.org/gbRequest.html?",
                     "ISO={country_iso}",
                     "&ADM=ADM{admin_level}",
-                    "&TYP={type")
-  out <- httr::GET(url)
+                    "&TYP={type}")
+
+  out <- httr::GET(url, httr::timeout(timeout))
   out <- jsonlite::fromJSON(rawToChar(out$content))
+
+  if(is.null(out$gjDownloadURL)) {
+    stop("url is not valid: check country_iso and admin_level.")
+  }
+
   shape <- sf::st_read(out$gjDownloadURL)
 
   return(shape)
