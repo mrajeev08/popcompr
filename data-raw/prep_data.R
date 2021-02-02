@@ -2,25 +2,22 @@
 library(raster)
 library(dplyr)
 
-lesotho_wp_2019 <- raster("data-raw/lso_ppp_2019.tif")
-names(lesotho_wp_2019) <- "lso_worldpop_2019"
-
-lesotho_fb_2019 <- raster("data-raw/population_lso_2019-07-01_geotiff/population_lso_2019-07-01.tif")
-names(lesotho_fb_2019) <- "lso_facebook_2019"
+lso_worldpop_2019 <- raster("data-raw/lso_ppp_2019.tif")
+lso_facebook_2019 <- raster("data-raw/population_lso_2019-07-01_geotiff/population_lso_2019-07-01.tif")
 
 # storing data in external
-writeRaster(lesotho_wp_2019, "inst/extdata/lesotho_wp_2019.tif", overwrite = TRUE)
-writeRaster(lesotho_fb_2019, "inst/extdata/lesotho_fb_2019.tif", overwrite = TRUE)
+writeRaster(lso_worldpop_2019, "inst/external/lso_worldpop_2019.tif", overwrite = TRUE)
+writeRaster(lso_facebook_2019, "inst/external/lso_facebook_2019.tif", overwrite = TRUE)
 
 # set to text string
-lesotho_fb_2019 <- paste("To acess this dataset, use the following code:",
-                         "raster(system.file('external/lesotho_fb_2019.tif', package='popcompr'))",
+lso_facebook_2019 <- paste("To acess this dataset, use the following code:",
+                         "raster(system.file('external/lso_facebook_2019.tif', package='popcompr'))",
                          "See ?lesotho_fb_2019 for documentation of this dataset.", sep = "\n")
-lesotho_wp_2019 <- paste("To acess this dataset, use the following code:",
-                         "raster(system.file('external/lesotho_wp_2019.tif', package='popcompr'))",
+lso_worldpop_2019 <- paste("To acess this dataset, use the following code:",
+                         "raster(system.file('external/lso_worldpop_2019.tif', package='popcompr'))",
                          "See ?lesotho_wp_2019 for documentation of this dataset.", sep = "\n")
-usethis::use_data(lesotho_wp_2019, overwrite = TRUE)
-usethis::use_data(lesotho_fb_2019, overwrite = TRUE)
+usethis::use_data(lso_worldpop_2019, overwrite = TRUE)
+usethis::use_data(lso_facebook_2019, overwrite = TRUE)
 
 # Get available data sets
 iso_names <- readr::read_csv("data-raw/iso_country_names.csv")

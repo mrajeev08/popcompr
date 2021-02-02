@@ -12,7 +12,7 @@ remotes::install_github("mrajeev08/popcompr")
 
 ## Example using data from Lesotho
 
-Included in the package are two datasets on population estimates in Lesotho (simply choosing Lesotho because its small) downloaded from [HDX](https://data.humdata.org). See `?lesotho_wp_2019` and `?lesotho_fb_2019` for more details. You have to access them using the system.file arguments so that the functions can correctly work with the raster files stored on the disk.
+Included in the package are two datasets on population estimates in Lesotho (simply choosing Lesotho because its small) downloaded from [HDX](https://data.humdata.org). See `?lso_worlpop_2019` and `?lso_facebook_2019` for more details. You have to access them using the system.file arguments so that the functions can correctly work with the raster files stored on the disk.
 
 This example compares these two datasets at a default resolution of 0.0833 degrees (or approximately 1 km<sup>2</sup> at the equator):
 
@@ -20,8 +20,8 @@ This example compares these two datasets at a default resolution of 0.0833 degre
 library(popcompr)
 
 # comparing at pixel level with data included in the package
-lesotho_fb_2019 <- raster(system.file("external/lesotho_fb_2019.tif", package="popcompr"))
-lesotho_wp_2019 <- raster(system.file("external/lesotho_wp_2019.tif", package="popcompr"))
+lesotho_fb_2019 <- raster(system.file("external/lso_worlpop_2019.tif", package="popcompr"))
+lesotho_wp_2019 <- raster(system.file("external/lso_facebook_2019.tif", package="popcompr"))
 pop_list <- list(lesotho_wp_2019, lesotho_fb_2019)
 
 # compare pop function

@@ -30,11 +30,11 @@
 #'
 #'@examples
 #'\dontrun{
-#'lesotho_fb_2019 <- raster(system.file("external/lesotho_fb_2019.tif", package="popcompr")
+#'lesotho_fb_2019 <- raster(system.file("external/lso_facebook_2019.tif", package="popcompr"))
 #'}
 #'
 #'
-"lesotho_fb_2019"
+"lso_facebook_2019"
 
 #' Population counts for Lesotho from WorldPop for the year 2019.
 #'
@@ -49,7 +49,7 @@
 #'@keywords dataset
 #'@examples
 #'\dontrun{
-#'lesotho_wp_2019 <- raster(system.file("external/lesotho_wp_2019.tif", package="popcompr")
+#'lesotho_wp_2019 <- raster(system.file("external/lso_worldpop_2019.tif", package="popcompr"))
 #'}
 #'
-"lesotho_wp_2019"
+"lso_worldpop_2019"
