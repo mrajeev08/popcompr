@@ -20,8 +20,8 @@ This example compares these two datasets at a default resolution of 0.0833 degre
 library(popcompr)
 
 # comparing at pixel level with data included in the package
-lesotho_fb_2019 <- raster(system.file("external/lso_worlpop_2019.tif", package="popcompr"))
 lesotho_wp_2019 <- raster(system.file("external/lso_facebook_2019.tif", package="popcompr"))
+lesotho_fb_2019 <- raster(system.file("external/lso_worldpop_2019.tif", package="popcompr"))
 pop_list <- list(lesotho_wp_2019, lesotho_fb_2019)
 
 # compare pop function
@@ -53,10 +53,11 @@ Here are also some great resources on gridded population datasets from CIESIN at
 
 First clone the repo:
 ```
-git clone 
+git clone https://github.com/mrajeev08/popcompr.git
 ```
-Then with docker installed, build the image (might take a while if rocker/geospatial is not already built):
+Then navigate to the repo and build the image (might take a while if rocker/geospatial is not already built):
 ```
+docker build . -t popcompr
 ```
 Then run your container:
 ```
