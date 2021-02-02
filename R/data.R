@@ -23,8 +23,13 @@
 #'  projected in Geographic Coordinate System, WGS84.
 #'  See source url for more details.
 #'
+#'@details This is just a help file, to access the file see the example below.
+#'
 #'@source \url{https://data.humdata.org/dataset/highresolutionpopulationdensitymaps-lso}
 #'@keywords dataset
+#'
+#'@example
+#'lesotho_fb_2019 <- raster(system.file("external/lesotho_fb_2019.tif", package="popcompr")
 #'
 "lesotho_fb_2019"
 
@@ -35,7 +40,11 @@
 #'  projected in Geographic Coordinate System, WGS84.
 #'  See source url for more details.
 #'
+#'@details This is just a help file, to access the file see the example below.
+#'
 #'@source \url{https://data.humdata.org/dataset/worldpop-population-counts-for-lesotho}
 #'@keywords dataset
+#'@example
+#'lesotho_wp_2019 <- raster(system.file("external/lesotho_wp_2019.tif", package="popcompr")
 #'
 "lesotho_wp_2019"

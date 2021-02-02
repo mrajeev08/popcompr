@@ -36,6 +36,10 @@ library(sf)
 
 You can first get an estimate of the time required to return the comparison:
 ```{r}
+# comparing at pixel level with data included in the package
+lesotho_fb_2019 <- raster(system.file("external/lesotho_fb_2019.tif", package="popcompr"))
+lesotho_wp_2019 <- raster(system.file("external/lesotho_wp_2019.tif", package="popcompr"))
+
 pop_list <- list(lesotho_wp_2019, lesotho_fb_2019)
 compare_pop(pop_list, parallel = FALSE, 
                    estimate_time = TRUE)

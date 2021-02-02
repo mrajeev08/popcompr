@@ -12,16 +12,20 @@ remotes::install_github("mrajeev08/popcompr")
 
 ## Example using data from Lesotho
 
-Included in the package are two datasets on population estimates in Lesotho (simply choosing Lesotho because its small) downloaded from [HDX](https://data.humdata.org). See `?lesotho_wp_2019` and `?lesotho_fb_2019` for more details. 
+Included in the package are two datasets on population estimates in Lesotho (simply choosing Lesotho because its small) downloaded from [HDX](https://data.humdata.org). See `?lesotho_wp_2019` and `?lesotho_fb_2019` for more details. You have to access them using the system.file arguments so that the functions can correctly work with the raster files stored on the disk.
 
-This example compares these two datasets at a dedault resolution of 0.0833 degrees (or approximately 1 km<sup>2</sup> at the equator):
+This example compares these two datasets at a default resolution of 0.0833 degrees (or approximately 1 km<sup>2</sup> at the equator):
 
 ``` r
 library(popcompr)
 
 # comparing at pixel level with data included in the package
+lesotho_fb_2019 <- raster(system.file("external/lesotho_fb_2019.tif", package="popcompr"))
+lesotho_wp_2019 <- raster(system.file("external/lesotho_wp_2019.tif", package="popcompr"))
 pop_list <- list(lesotho_wp_2019, lesotho_fb_2019)
-compare_pop(pop_list, parallel = FALSE_
+
+# compare pop function
+compare_pop(pop_list, parallel = FALSE)
 ```
 
 You can also compare population estimates at the administrative level. Access to country shapefiles is provided through a wrapper to the [geoBoundaries API](https://www.geoboundaries.org/api.html). 
@@ -44,6 +48,21 @@ les_shape <- aggregate_to_shp(brick = exe, sf = les_shape, max_adjacent = 100)
 See the [documentation](https://mrajeev08.github.io/popcompr/) for examples of vizualizations. 
 
 Here are also some great resources on gridded population datasets from CIESIN at Columbia University: [https://sedac.ciesin.columbia.edu/mapping/popgrid](https://sedac.ciesin.columbia.edu/mapping/popgrid).
+
+# Dev in docker
+
+First clone the repo:
+```
+git clone 
+```
+Then with docker installed, build the image (might take a while if rocker/geospatial is not already built):
+```
+```
+Then run your container:
+```
+docker run -d -p 8787:8787 --name popcompr -e USER=mrajeev -e PASSWORD=pass popcompr:latest
+```
+Navigate to `http://localhost:8787` in your browser and then use the username and password to use Rstudio. 
 
 ## Roadmap
 

@@ -79,7 +79,7 @@ resample_to_template <- function(pop, template, parallel,
 
 resample_fun <- function(pop, template, parallel, estimate_time) {
 
-  bs <- blockSize(pop)
+  bs <-  raster::blockSize(pop)
 
   end_cell <- bs$row * ncol(pop)
   start_cell <- end_cell - end_cell[1] + 1
