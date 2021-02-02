@@ -18,6 +18,7 @@ This example compares these two datasets at a default resolution of 0.0833 degre
 
 ``` r
 library(popcompr)
+library(raster) # also need to load this for examples
 
 # comparing at pixel level with data included in the package
 lesotho_wp_2019 <- raster(system.file("external/lso_facebook_2019.tif", package="popcompr"))
@@ -82,9 +83,11 @@ admin 2/1?)
 
 ### Refactoring existing functions
 - use a unified naming system so that you can programitcally decide what to plot and also parse labels (i.e. data contract)
+- wrap example pop rasters into a function (or get them using httr)
 - right now, defaults to a memory safe aggregation method using chunks regardless of raster size.
   - benchmark to see when single calls are faster
   - programatically decide when to do it the memory safe way (using `raster::canProcessInMemory`)
+  - make sure that the template is also memory safe (and export that fun/let users put in their own template?)
 - warn/error if extents don't match by at least xx% between population rasters or shapefiles
 - don't make the user parallelize, but instead use future?
 - multithreaded downloads?
@@ -92,6 +95,7 @@ admin 2/1?)
 
 ### Expanding code base
 - autoplot functions (use S3 classes)? For static/interactive plots comparing up to N pop
+- write autosummary functions
 - API access to available population datasets by country:
   - World Pop (has an API)
   - Facebook/CIESIN (no API but on hdx)
