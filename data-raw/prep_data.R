@@ -12,6 +12,16 @@ names(lesotho_fb_2019) <- "lso_facebook_2019"
 writeRaster(lesotho_wp_2019, "inst/extdata/lesotho_wp_2019.tif", overwrite = TRUE)
 writeRaster(lesotho_fb_2019, "inst/extdata/lesotho_fb_2019.tif", overwrite = TRUE)
 
+# set to text string
+lesotho_fb_2019 <- paste("To acess this dataset, use the following code:",
+                         "raster(system.file('external/lesotho_fb_2019.tif', package='popcompr'))",
+                         "See ?lesotho_fb_2019 for documentation of this dataset.", sep = "\n")
+lesotho_wp_2019 <- paste("To acess this dataset, use the following code:",
+                         "raster(system.file('external/lesotho_wp_2019.tif', package='popcompr'))",
+                         "See ?lesotho_wp_2019 for documentation of this dataset.", sep = "\n")
+usethis::use_data(lesotho_wp_2019, overwrite = TRUE)
+usethis::use_data(lesotho_fb_2019, overwrite = TRUE)
+
 # Get available data sets
 iso_names <- readr::read_csv("data-raw/iso_country_names.csv")
 out <- httr::GET(glue::glue("https://www.geoboundaries.org/gbRequest.html?", "ISO=ALL"))

@@ -19,4 +19,13 @@ lesotho_wp_2019
 \description{
 Population counts for Lesotho from WorldPop for the year 2019.
 }
+\details{
+This is just a help file, to access the file see the example below.
+}
+\examples{
+\dontrun{
+lesotho_wp_2019 <- raster(system.file("external/lesotho_wp_2019.tif", package="popcompr")
+}
+
+}
 \keyword{dataset}

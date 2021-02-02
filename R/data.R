@@ -28,8 +28,11 @@
 #'@source \url{https://data.humdata.org/dataset/highresolutionpopulationdensitymaps-lso}
 #'@keywords dataset
 #'
-#'@example
+#'@examples
+#'\dontrun{
 #'lesotho_fb_2019 <- raster(system.file("external/lesotho_fb_2019.tif", package="popcompr")
+#'}
+#'
 #'
 "lesotho_fb_2019"
 
@@ -44,7 +47,9 @@
 #'
 #'@source \url{https://data.humdata.org/dataset/worldpop-population-counts-for-lesotho}
 #'@keywords dataset
-#'@example
+#'@examples
+#'\dontrun{
 #'lesotho_wp_2019 <- raster(system.file("external/lesotho_wp_2019.tif", package="popcompr")
+#'}
 #'
 "lesotho_wp_2019"

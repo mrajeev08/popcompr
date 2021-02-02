@@ -69,6 +69,7 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
+
 <div id="popcompr" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#popcompr" class="anchor"></a>popcompr</h1></div>
@@ -83,13 +84,18 @@
 <div id="example-using-data-from-lesotho" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-using-data-from-lesotho" class="anchor"></a>Example using data from Lesotho</h2>
-<p>Included in the package are two datasets on population estimates in Lesotho (simply choosing Lesotho because its small) downloaded from <a href="https://data.humdata.org">HDX</a>. See <code><a href="reference/lesotho_wp_2019.html">?lesotho_wp_2019</a></code> and <code><a href="reference/lesotho_fb_2019.html">?lesotho_fb_2019</a></code> for more details.</p>
-<p>This example compares these two datasets at a dedault resolution of 0.0833 degrees (or approximately 1 km<sup>2</sup> at the equator):</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(popcompr)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># comparing at pixel level with data included in the package</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>pop_list <span class="ot">&lt;-</span> <span class="fu">list</span>(lesotho_wp_2019, lesotho_fb_2019)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">compare_pop</span>(pop_list, <span class="at">parallel =</span> FALSE_</span></code></pre></div>
+<p>Included in the package are two datasets on population estimates in Lesotho (simply choosing Lesotho because its small) downloaded from <a href="https://data.humdata.org">HDX</a>. See <code><a href="reference/lesotho_wp_2019.html">?lesotho_wp_2019</a></code> and <code><a href="reference/lesotho_fb_2019.html">?lesotho_fb_2019</a></code> for more details. You have to access them using the system.file arguments so that the functions can correctly work with the raster files stored on the disk.</p>
+<p>This example compares these two datasets at a default resolution of 0.0833 degrees (or approximately 1 km<sup>2</sup> at the equator):</p>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mrajeev08.github.io/popcompr">popcompr</a></span><span class="op">)</span>
+
+<span class="co"># comparing at pixel level with data included in the package</span>
+<span class="va">lesotho_fb_2019</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/lesotho_fb_2019.tif"</span>, package<span class="op">=</span><span class="st">"popcompr"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">lesotho_wp_2019</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/lesotho_wp_2019.tif"</span>, package<span class="op">=</span><span class="st">"popcompr"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">pop_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">lesotho_wp_2019</span>, <span class="va">lesotho_fb_2019</span><span class="op">)</span>
+
+<span class="co"># compare pop function</span>
+<span class="fu"><a href="reference/compare_pop.html">compare_pop</a></span><span class="op">(</span><span class="va">pop_list</span>, parallel <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
 <p>You can also compare population estimates at the administrative level. Access to country shapefiles is provided through a wrapper to the <a href="https://www.geoboundaries.org/api.html">geoBoundaries API</a>. To see available datasets, use <code>View(iso_codes</code>)`. An example for Lesotho:</p>
 <ul>
 <li>Get admin shapefile</li>
@@ -107,6 +113,17 @@
 <p>See the <a href="https://mrajeev08.github.io/popcompr/">documentation</a> for examples of vizualizations.</p>
 <p>Here are also some great resources on gridded population datasets from CIESIN at Columbia University: <a href="https://sedac.ciesin.columbia.edu/mapping/popgrid">https://sedac.ciesin.columbia.edu/mapping/popgrid</a>.</p>
 </div>
+</div>
+<div id="dev-in-docker" class="section level1">
+<h1 class="hasAnchor">
+<a href="#dev-in-docker" class="anchor"></a>Dev in docker</h1>
+<p>First clone the repo:</p>
+<pre><code>git clone </code></pre>
+<p>Then with docker installed, build the image (might take a while if rocker/geospatial is not already built):</p>
+<pre><code></code></pre>
+<p>Then run your container:</p>
+<pre><code>docker run -d -p 8787:8787 --name popcompr -e USER=mrajeev -e PASSWORD=pass popcompr:latest</code></pre>
+<p>Navigate to <code>http://localhost:8787</code> in your browser and then use the username and password to use Rstudio.</p>
 <div id="roadmap" class="section level2">
 <h2 class="hasAnchor">
 <a href="#roadmap" class="anchor"></a>Roadmap</h2>
@@ -164,6 +181,7 @@
 </div>
 </div>
 </div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
