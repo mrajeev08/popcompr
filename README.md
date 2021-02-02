@@ -49,7 +49,7 @@ See the [documentation](https://mrajeev08.github.io/popcompr/) for examples of v
 
 Here are also some great resources on gridded population datasets from CIESIN at Columbia University: [https://sedac.ciesin.columbia.edu/mapping/popgrid](https://sedac.ciesin.columbia.edu/mapping/popgrid).
 
-# Dev in docker
+# Developing in docker
 
 First clone the repo:
 ```
@@ -63,6 +63,7 @@ Then run your container:
 ```
 docker run -d -p 8787:8787 --name popcompr -e USER=mrajeev -e PASSWORD=pass popcompr:latest
 ```
+
 Navigate to `http://localhost:8787` in your browser and then use the username and password to use Rstudio. 
 
 ## Roadmap
