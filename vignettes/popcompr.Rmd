@@ -22,7 +22,8 @@ Included in the package are files to reproduce a minimal working example for the
 #### First load the necessary libraries 
 + some extras for plotting (plotly & ggplot2)
 ```{r setup}
-library(popcompr)
+# library(popcompr)
+devtools::load_all()
 library(raster)
 library(data.table)
 library(foreach)
@@ -125,7 +126,6 @@ Then we can aggregate the population rasters to it:
 ```{r}
 # Get the shapefile at admin 2
 les_shape <- aggregate_to_shp(brick = exe, sf = les_shape, max_adjacent = 100)
-
 ```
 `aggregate_to_shp` will warn you if grid cell values go unallocated to the shapefile. In the case that many people go missing, you can set max_adjacent higher (this determines how many grid cells to buffer to when looking for the nearest non-NA neighbor), but it may also be wise to check the extent & boundaries of the shapefile vs. the population rasters.
 

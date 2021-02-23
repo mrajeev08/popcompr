@@ -55,11 +55,16 @@ aggregate_to_shp <- function(brick, sf, max_adjacent = 100) {
 #' @import data.table raster
 #' @keywords internal
 #'
-match_nearest <- function(cell_ids, to_match, max_adjacent = 100) {
+match_nearest <- function(cell_ids, to_match, max_adjacent = 10) {
 
+  # For each cell_id to match: get the adjacent cell_ids
   find <- data.table(adjacent(to_match, cell_ids))
+
+  # Get the admin values at the adjacent cell_ids
   find$match <- to_match[find$to]
-  matched <- find[, .(match = min(match, na.rm = TRUE)), by = "from"] # match is the friction grid index
+  suppressWarnings({
+    matched <- find[, .(match = min(match, na.rm = TRUE)), by = "from"] # match is the friction grid index
+  })
   matched <- matched[!is.infinite(match)]
   find <- find[!(from %in% matched$from)]
 
@@ -67,10 +72,13 @@ match_nearest <- function(cell_ids, to_match, max_adjacent = 100) {
   for (i in 1:max_adjacent) {
     if (nrow(find > 0)) {
       adj_next <- adjacent(to_match, unique(find$to))
-      adj_next <- data.table(to = adj_next[, "from"], to_i = adj_next[, "to"]) # next to_i
+      adj_next <- data.table(to = adj_next[, "from"],
+                             to_i = adj_next[, "to"]) # next to_i
       adj_next$match <- to_match[adj_next$to_i]
-      # this throws warnings throw out now!
-      matches <- adj_next[, .(match = min(match, na.rm = TRUE)), by = "to"]
+      # this throws warnings: throw out now!
+      suppressWarnings({
+        matches <- adj_next[, .(match = min(match, na.rm = TRUE)), by = "to"]
+      })
       find <- find[, c("from", "to")][matches, on = "to"]
       matches <- find[, .(match = min(match, na.rm = TRUE)), by = "from"]
       matched <- rbind(matched, matches[!is.infinite(match)])

@@ -16,11 +16,10 @@ make_template <- function(pops, res_degrees) {
 
   ext <- do.call(raster::merge, lapply(pops, raster::extent))
 
-  temp <- raster(pops[[1]])
-  temp <- extend(temp, ext) # make sure extent covers all the rasters
+  temp <- raster(ext)
+  temp <- extend(temp, 1) # add a buffer set of cells on each side
 
-  # set degree
-  res(temp) <- res_degrees
+  res(temp) <- res_degrees   # set degree
   values(temp) <- NA # set all to NA
   return(temp)
 

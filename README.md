@@ -73,9 +73,9 @@ This package is in it's very starting stages. Here's the planned/proposed dev.
 
 ### Little fixes
 - managing imports from `data.table` & `raster` (including conflict with `shift`)
-- supress or manage warnings on `data.table` with `gmin` in `match_nearest`
+- [x] supress or manage warnings on `data.table` with `gmin` in `match_nearest`
 - generally refactor `match_nearest` to be faster and cleaner
-- double check where people go missing (is it because of holes? technically extents should be merged and should cover all the raster inputs)
+- [x] double check where people go missing (is it because of holes? technically extents should be merged and should cover all the raster inputs)
 - better guidance on resolution and rationale for default 
 - rename `iso_codes` to geoBoundaries_data
 - option to pass a field to aggregate to (i.e. if you download adm3 shapefile, make it easier to aggregate to 
