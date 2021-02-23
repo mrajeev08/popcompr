@@ -74,6 +74,7 @@ resample_to_template <- function(pop, template, parallel,
 #' @return a data.table or time estimate
 #' @import raster foreach
 #' @keywords internal
+#'
 
 resample_fun <- function(pop, template, parallel, estimate_time) {
 

@@ -1,13 +1,14 @@
 last_built: 2021-02-01T04:55Z
 reference:
-- title: Functions
+- title: Compare population datasets
 - contents:
   - compare_pop
   - aggregate_to_shp
   - get_country_shape
-- title: Internal Functions
+- title: Automatic plotting and summary
 - contents:
-  - has_keyword("internal")
+  - plot_compare
+  - summarize_pops
 - title: Datasets
 - contents:
   - has_keyword("dataset")
