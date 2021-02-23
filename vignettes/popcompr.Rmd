@@ -110,10 +110,10 @@ ggplot(comp_dt) +
 ```
 
 ### Comparing at the administrative level
-You can access country shapefiles using `get_country_shape` which will return a shapefile as an `sf` object. These are available through the [geoBoundaries API](https://www.geoboundaries.org/api.html), where more documentation can be found on available datasets. In addition, `iso_codes` is a dataset provided in the package to find country codes and available admin levels. 
+You can access country shapefiles using `get_country_shape` which will return a shapefile as an `sf` object. These are available through the [geoBoundaries API](https://www.geoboundaries.org/api.html), where more documentation can be found on available datasets. In addition, `geoboundaries` is a dataset provided in the package to find country codes and available admin levels. 
 ```{r}
 # Find the right iso code & see which admin levels are available
-dplyr::filter(iso_codes, grepl("Les", country))
+dplyr::filter(geoboundaries, grepl("Les", country))
 ```
 
 We get the Lesotho shapefile to the admin level 2 (the `type` argument defaults to a simplified shapefile which is faster for plotting and downloading, but users may prefer unsimplified files for better accuracy see the geoBoundaries API documentation for more information).

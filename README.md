@@ -30,12 +30,12 @@ compare_pop(pop_list, parallel = FALSE)
 ```
 
 You can also compare population estimates at the administrative level. Access to country shapefiles is provided through a wrapper to the [geoBoundaries API](https://www.geoboundaries.org/api.html). 
-To see available datasets, use `View(iso_codes`)`. An example for Lesotho:
+To see available datasets, use `View(geoboundaries`)`. An example for Lesotho:
 
 - Get admin shapefile
 ``` r
 # Find the right iso code & see which admin levels are available
-dplyr::filter(iso_codes, grepl("Les", country))
+dplyr::filter(geoboundaries, grepl("Les", country))
 les_shape <- get_country_shape(country_iso = "LSO", admin_level = 2)
 
 ```
@@ -72,17 +72,17 @@ Navigate to `http://localhost:8787` in your browser and then use the username an
 This package is in it's very starting stages. Here's the planned/proposed dev.
 
 ### Little fixes
-- managing imports from `data.table` & `raster` (including conflict with `shift`)
+- [x] managing imports from `data.table` & `raster` (including conflict with `shift`)
 - [x] supress or manage warnings on `data.table` with `gmin` in `match_nearest`
-- generally refactor `match_nearest` to be faster and cleaner
 - [x] double check where people go missing (is it because of holes? technically extents should be merged and should cover all the raster inputs)
+- [x] rename `iso_codes` to geoBoundaries_data
+- generally refactor `match_nearest` to be faster and cleaner
 - better guidance on resolution and rationale for default 
-- rename `iso_codes` to geoBoundaries_data
 - option to pass a field to aggregate to (i.e. if you download adm3 shapefile, make it easier to aggregate to 
 admin 2/1?)
 
 ### Refactoring existing functions
-- use a unified naming system so that you can programitcally decide what to plot and also parse labels (i.e. data contract)
+- [x] use a unified naming system so that you can programitcally decide what to plot and also parse labels (i.e. data contract)
 - wrap example pop rasters into a function (or get them using httr)
 - right now, defaults to a memory safe aggregation method using chunks regardless of raster size.
   - benchmark to see when single calls are faster
@@ -94,8 +94,8 @@ admin 2/1?)
 - write unit tests!
 
 ### Expanding code base
-- autoplot functions (use S3 classes)? For static/interactive plots comparing up to N pop
-- write autosummary functions
+- [x] autoplot functions (use S3 classes)? For static/interactive plots comparing up to N pop
+- [x] write autosummary functions
 - API access to available population datasets by country:
   - World Pop (has an API)
   - Facebook/CIESIN (no API but on hdx)
@@ -105,7 +105,7 @@ admin 2/1?)
   - see [https://www.popgrid.org/data-docs-table1](https://www.popgrid.org/data-docs-table1) for more details on all datasets
   - https://github.com/dickoa/rhdx for example of accessing files through hdx api
 - option to crop files to an extent and then do the comparison?
-
+ 
 
 
 

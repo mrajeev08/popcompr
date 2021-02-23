@@ -4,10 +4,9 @@
 #' @param pops list of pop rasters
 #'
 #' @return a raster template
-#' @import raster data.table
+#' @import raster
 #' @keywords internal
 #'
-#' To do: check crs here too? (just in case)
 #'
 make_template <- function(pops, res_degrees) {
 
@@ -34,7 +33,7 @@ make_template <- function(pops, res_degrees) {
 #'
 #' @return a data.table or time estimate
 #'
-#' @import raster data.table
+#' @import raster
 #' @keywords internal
 #'
 resample_to_template <- function(pop, template, parallel,
@@ -54,7 +53,7 @@ resample_to_template <- function(pop, template, parallel,
     out <- out[!is.na(new_id)]
 
     template[out$new_id] <- out$V1
-    names(template) <- names(pop)
+    names(template) <- paste0("popcmp_", names(pop))
 
     if(length(missing) > 0) {
       print(paste0("warning: ", missing, " people were not matched."))
@@ -73,7 +72,7 @@ resample_to_template <- function(pop, template, parallel,
 #' @param estimate_time
 #'
 #' @return a data.table or time estimate
-#' @import raster data.table foreach
+#' @import raster foreach
 #' @keywords internal
 
 resample_fun <- function(pop, template, parallel, estimate_time) {
@@ -123,7 +122,7 @@ resample_fun <- function(pop, template, parallel, estimate_time) {
 #'
 #' @return a raster brick
 #' @export
-#' @import raster data.table
+#' @import raster
 #'
 compare_pop <- function(pops, res_degrees = 30/3600,
                         parallel = FALSE, estimate_time = FALSE) {

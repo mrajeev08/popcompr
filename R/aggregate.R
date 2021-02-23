@@ -6,7 +6,7 @@
 #'
 #' @return an sf object with columns for each layer in the raster brick
 #' @export
-#' @import sf raster data.table fasterize
+#' @import sf raster fasterize
 #'
 #'
 aggregate_to_shp <- function(brick, sf, max_adjacent = 100) {
@@ -52,7 +52,7 @@ aggregate_to_shp <- function(brick, sf, max_adjacent = 100) {
 #' @param to_match raster with associated values from shapefile
 #' @param max_adjacent max cell window to look for nearest non-NA cells
 #'
-#' @import data.table raster
+#' @import raster
 #' @keywords internal
 #'
 match_nearest <- function(cell_ids, to_match, max_adjacent = 10) {

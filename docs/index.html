@@ -96,13 +96,13 @@
 
 <span class="co"># compare pop function</span>
 <span class="fu"><a href="reference/compare_pop.html">compare_pop</a></span><span class="op">(</span><span class="va">pop_list</span>, parallel <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
-<p>You can also compare population estimates at the administrative level. Access to country shapefiles is provided through a wrapper to the <a href="https://www.geoboundaries.org/api.html">geoBoundaries API</a>. To see available datasets, use <code>View(iso_codes</code>)`. An example for Lesotho:</p>
+<p>You can also compare population estimates at the administrative level. Access to country shapefiles is provided through a wrapper to the <a href="https://www.geoboundaries.org/api.html">geoBoundaries API</a>. To see available datasets, use <code>View(geoboundaries</code>)`. An example for Lesotho:</p>
 <ul>
 <li>Get admin shapefile</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="co"># Find the right iso code &amp; see which admin levels are available</span>
-<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">iso_codes</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"Les"</span>, <span class="va">country</span><span class="op">)</span><span class="op">)</span>
+<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">geoboundaries</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"Les"</span>, <span class="va">country</span><span class="op">)</span><span class="op">)</span>
 <span class="va">les_shape</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_country_shape.html">get_country_shape</a></span><span class="op">(</span>country_iso <span class="op">=</span> <span class="st">"LSO"</span>, admin_level <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></pre></div>
 <ul>
 <li>And then aggregate the population datasets to the admin unit:</li>
@@ -138,7 +138,7 @@
 <li>generally refactor <code>match_nearest</code> to be faster and cleaner</li>
 <li>double check where people go missing (is it because of holes? technically extents should be merged and should cover all the raster inputs)</li>
 <li>better guidance on resolution and rationale for default</li>
-<li>rename <code>iso_codes</code> to geoBoundaries_data</li>
+<li>rename <code>geoboundaries</code> to geoBoundaries_data</li>
 <li>option to pass a field to aggregate to (i.e. if you download adm3 shapefile, make it easier to aggregate to admin 2/1?)</li>
 </ul>
 </div>

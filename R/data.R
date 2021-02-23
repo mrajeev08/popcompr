@@ -13,7 +13,7 @@
 #'@source \url{https://www.geoboundaries.org/api.html}
 #'@keywords dataset
 #'
-"iso_codes"
+"geoboundaries"
 
 
 #' Population counts for Lesotho from Facebook/CIESIN for the year 2019.

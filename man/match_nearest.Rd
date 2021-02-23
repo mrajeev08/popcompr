@@ -4,7 +4,7 @@
 \alias{match_nearest}
 \title{Match to closest non-NA cell}
 \usage{
-match_nearest(cell_ids, to_match, max_adjacent = 100)
+match_nearest(cell_ids, to_match, max_adjacent = 10)
 }
 \arguments{
 \item{cell_ids}{cells with NA values for shapefile feature}

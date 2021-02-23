@@ -26,6 +26,6 @@ out <- jsonlite::fromJSON(rawToChar(out$content))
 out %>%
   select(iso_code = boundaryISO, year = boundaryYear, admin_level = boundaryType,
          source = `boundarySource-1`, license = licenseDetail) %>%
-  left_join(iso_names) -> iso_codes
+  left_join(iso_names) -> geoboundaries
 
-usethis::use_data(iso_codes, overwrite = TRUE)
+usethis::use_data(geoboundaries, overwrite = TRUE)

@@ -8,7 +8,7 @@ get_country_shape(country_iso, admin_level, type = "SSCU", timeout = 2)
 }
 \arguments{
 \item{country_iso}{the three letter code corresponding to the country.
-Use ?popcompr::iso_codes to see the full list.}
+Use ?popcompr::geoboundaries to see the full list.}
 
 \item{admin_level}{numeric, the admin level of the shapefile (0 = the country border,
 then 1, 2, 3). Note that not all admin levels are available}

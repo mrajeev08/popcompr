@@ -1,7 +1,7 @@
 #' Get country shapefile from geoboundaries
 #'
 #' @param country_iso the three letter code corresponding to the country.
-#'  Use ?popcompr::iso_codes to see the full list.
+#'  Use ?popcompr::geoboundaries to see the full list.
 #' @param admin_level numeric, the admin level of the shapefile (0 = the country border,
 #'  then 1, 2, 3). Note that not all admin levels are available
 #' @param type the type of shapefile. Geoboundaries have simplified and unsimplified,

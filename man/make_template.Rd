@@ -17,13 +17,4 @@ a raster template
 \description{
 Make a template
 }
-\keyword{(just}
-\keyword{To}
-\keyword{case)}
-\keyword{check}
-\keyword{crs}
-\keyword{do:}
-\keyword{here}
-\keyword{in}
 \keyword{internal}
-\keyword{too?}
