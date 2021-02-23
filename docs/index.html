@@ -88,10 +88,11 @@
 <p>This example compares these two datasets at a default resolution of 0.0833 degrees (or approximately 1 km<sup>2</sup> at the equator):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mrajeev08.github.io/popcompr">popcompr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster">raster</a></span><span class="op">)</span> <span class="co"># also need to load this for examples</span>
 
 <span class="co"># comparing at pixel level with data included in the package</span>
-<span class="va">lesotho_fb_2019</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/lso_worlpop_2019.tif"</span>, package<span class="op">=</span><span class="st">"popcompr"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">lesotho_wp_2019</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/lso_facebook_2019.tif"</span>, package<span class="op">=</span><span class="st">"popcompr"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">lesotho_wp_2019</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/lso_facebook_2019.tif"</span>, package<span class="op">=</span><span class="st">"popcompr"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">lesotho_fb_2019</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/lso_worldpop_2019.tif"</span>, package<span class="op">=</span><span class="st">"popcompr"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">pop_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">lesotho_wp_2019</span>, <span class="va">lesotho_fb_2019</span><span class="op">)</span>
 
 <span class="co"># compare pop function</span>
@@ -114,13 +115,13 @@
 <p>Here are also some great resources on gridded population datasets from CIESIN at Columbia University: <a href="https://sedac.ciesin.columbia.edu/mapping/popgrid">https://sedac.ciesin.columbia.edu/mapping/popgrid</a>.</p>
 </div>
 </div>
-<div id="dev-in-docker" class="section level1">
+<div id="developing-in-docker" class="section level1">
 <h1 class="hasAnchor">
-<a href="#dev-in-docker" class="anchor"></a>Dev in docker</h1>
+<a href="#developing-in-docker" class="anchor"></a>Developing in docker</h1>
 <p>First clone the repo:</p>
-<pre><code>git clone </code></pre>
-<p>Then with docker installed, build the image (might take a while if rocker/geospatial is not already built):</p>
-<pre><code></code></pre>
+<pre><code>git clone https://github.com/mrajeev08/popcompr.git</code></pre>
+<p>Then navigate to the repo and build the image (might take a while if rocker/geospatial is not already built):</p>
+<pre><code>docker build . -t popcompr</code></pre>
 <p>Then run your container:</p>
 <pre><code>docker run -d -p 8787:8787 --name popcompr -e USER=mrajeev -e PASSWORD=pass popcompr:latest</code></pre>
 <p>Navigate to <code>http://localhost:8787</code> in your browser and then use the username and password to use Rstudio.</p>
@@ -132,13 +133,23 @@
 <h3 class="hasAnchor">
 <a href="#little-fixes" class="anchor"></a>Little fixes</h3>
 <ul>
-<li>managing imports from <code>data.table</code> &amp; <code>raster</code> (including conflict with <code>shift</code>)</li>
-<li>supress or manage warnings on <code>data.table</code> with <code>gmin</code> in <code>match_nearest</code>
+<li>
+<input type="checkbox" disabled checked>
+managing imports from <code>data.table</code> &amp; <code>raster</code> (including conflict with <code>shift</code>)</li>
+<li>
+<input type="checkbox" disabled checked>
+supress or manage warnings on <code>data.table</code> with <code>gmin</code> in <code>match_nearest</code>
 </li>
+<li>
+<input type="checkbox" disabled checked>
+double check where people go missing (is it because of holes? technically extents should be merged and should cover all the raster inputs)</li>
+<li>
+<input type="checkbox" disabled checked>
+rename <code>iso_codes</code> to geoBoundaries_data</li>
+<li>change plotting function for map so that option to overwrite the default transformations!</li>
+<li>fix tooltips with ggplotly</li>
 <li>generally refactor <code>match_nearest</code> to be faster and cleaner</li>
-<li>double check where people go missing (is it because of holes? technically extents should be merged and should cover all the raster inputs)</li>
 <li>better guidance on resolution and rationale for default</li>
-<li>rename <code>geoboundaries</code> to geoBoundaries_data</li>
 <li>option to pass a field to aggregate to (i.e. if you download adm3 shapefile, make it easier to aggregate to admin 2/1?)</li>
 </ul>
 </div>
@@ -146,11 +157,15 @@
 <h3 class="hasAnchor">
 <a href="#refactoring-existing-functions" class="anchor"></a>Refactoring existing functions</h3>
 <ul>
-<li>use a unified naming system so that you can programitcally decide what to plot and also parse labels (i.e. data contract)</li>
+<li>
+<input type="checkbox" disabled checked>
+use a unified naming system so that you can programitcally decide what to plot and also parse labels (i.e. data contract)</li>
+<li>wrap example pop rasters into a function (or get them using httr)</li>
 <li>right now, defaults to a memory safe aggregation method using chunks regardless of raster size.
 <ul>
 <li>benchmark to see when single calls are faster</li>
 <li>programatically decide when to do it the memory safe way (using <code><a href="https://rdrr.io/pkg/raster/man/programming.html">raster::canProcessInMemory</a></code>)</li>
+<li>make sure that the template is also memory safe (and export that fun/let users put in their own template?)</li>
 </ul>
 </li>
 <li>warn/error if extents don’t match by at least xx% between population rasters or shapefiles</li>
@@ -163,7 +178,12 @@
 <h3 class="hasAnchor">
 <a href="#expanding-code-base" class="anchor"></a>Expanding code base</h3>
 <ul>
-<li>autoplot functions (use S3 classes)? For static/interactive plots comparing up to N pop</li>
+<li>
+<input type="checkbox" disabled checked>
+autoplot functions (use S3 classes)? For static/interactive plots comparing up to N pop</li>
+<li>
+<input type="checkbox" disabled checked>
+write autosummary functions</li>
 <li>API access to available population datasets by country:
 <ul>
 <li>World Pop (has an API)</li>

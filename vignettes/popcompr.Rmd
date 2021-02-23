@@ -17,15 +17,15 @@ knitr::opts_chunk$set(
 `popcompr` is an R package to make it easier to compare different high resolution population datasets for humanitarian and research purposes. It is under active development and has not been released, but the code is available through a GPL3 license.
 
 To install package from github: 
-```{r, include = FALSE}
+```{r, eval = FALSE}
 remotes::install_github("mrajeev08/popcompr")
 ```
 
 
-### An example comparing 2019 population estimates for Lesotho from World Pop & Facebook/CIESIN
+## An example comparing 2019 population estimates for Lesotho from World Pop & Facebook/CIESIN
 Included in the package are files to reproduce a minimal working example for the country of Lesotho. `lesotho_wp_2019` and `lesotho_fb_2019` are included in the package (use `?lesotho_wp_2019` for more details).
 
-#### First load the necessary libraries 
+### First load the necessary libraries 
 + some extras for plotting (plotly & ggplot2)
 ```{r setup}
 library(popcompr)
@@ -38,7 +38,7 @@ library(fasterize)
 library(sf)
 ```
 
-#### Comparing populations at pixel level
+### Comparing populations at pixel level
 
 You can first get an estimate of the time required to return the comparison:
 ```{r}
@@ -71,24 +71,64 @@ stopCluster(cl)
 
 The output is a raster brick with a layer corresponding to each of the input population rasters. We can vizualize and compare the rasters:
 
-##### Map of differences
+#### Vizualizing and summarizing comparisons
 `plot_compare` and `summary_compare` are convenience functions to generate automatic plots. 
 The default is map of the differences between the population datasets.
 ```{r}
 plot_compare(exe)
+```
+
+Other options include:
+- hex plots
+```{r}
+plot_compare(exe, type = "hex")
+```
+
+- a pair plot (using function `GGally::ggpairs`)
+```{r}
+plot_compare(exe, type = "pairs")
+```
+
+- histogram
+```{r}
+plot_compare(exe, type = "hist")
+```
+
+All plots are ggplots and as such can be customized by adding scales, themes, etc. 
+You may get a warning if you're overriding an existing theme.
+
+```{r}
+out <- plot_compare(exe, type = "hex")
+out +
+  scale_fill_distiller(palette = "Greens", trans = "log")
+```
+
+**Note that for the map plots, changing the scales will mess up the labeling of the values. 
+This is known issue that I'll try to fix!**
+
+You can also make these interactive using plotly:
+```{r}
+plot_compare(exe, type = "map", interactive = TRUE) 
+```
+**Note that for the tooltips for these plots show the transformed values, should
+show the raw values, otherwise the interactive view is not that helpful!
+This is known issue that I'll try to fix!**
+
+If you're comparing a large number of rasters, you can also save the output, rather
+than returning the plot to your R session (just pass a file path and an extension). 
+```{r, eval = FALSE}
+plot_compare(exe, type = "map", save = TRUE, path = "test", ext = "jpeg") 
+
+# interactive plots get saved as html with package `htmlwidgets`
+plot_compare(exe, type = "map", save = TRUE, interactive = TRUE,
+             path = "test", ext = ".html") 
 
 ```
 
-You can also make these interactive using plotly/ggplotly functions:
+You can also generate summary stats. See `?summary_compare` for more details 
+on how to customize the summary stats. 
 ```{r}
-ggplotly(map_compare) 
-ggplotly(hex_compare) 
-```
-
-Check the distribution of differences:
-```{r}
-ggplot(comp_dt) +
-  geom_histogram(aes(x =lso_worldpop_2019 - lso_facebook_2019))
+summary_compare(exe)
 ```
 
 ### Comparing at the administrative level
@@ -111,34 +151,17 @@ les_shape <- aggregate_to_shp(brick = exe, sf = les_shape, max_adjacent = 100)
 ```
 `aggregate_to_shp` will warn you if grid cell values go unallocated to the shapefile. In the case that many people go missing, you can set max_adjacent higher (this determines how many grid cells to buffer to when looking for the nearest non-NA neighbor), but it may also be wise to check the extent & boundaries of the shapefile vs. the population rasters.
 
-We can vizualize these differences as well:
+We can compare these differences using the same functions as with the pixel 
+level comparisons:
 ```{r}
-map_compare <-
-  ggplot(les_shape) +
-  geom_sf(aes(fill = transform(lso_worldpop_2019 - lso_facebook_2019))) +
-  scale_fill_gradient2(labels = inv_trans, 
-                       name = "Difference between \n population estimates")
-map_compare
+plot_compare(les_shape)
 
-hex_compare <-
-  ggplot(les_shape) +
-  geom_hex(aes(x = lso_worldpop_2019, y = lso_facebook_2019), color = "grey") +
-  geom_abline(intercept = 0, slope = 1, linetype = 2, color = "grey") +
-  scale_fill_distiller(direction = 1, trans = "log",
-                       labels = function(x) round(x, -1))
-hex_compare
-```
+plot_compare(les_shape, type = "hex")
 
-You can also make these interactive using plotly/ggplotly functions:
-```{r}
-ggplotly(map_compare) 
-ggplotly(hex_compare) 
-```
+plot_compare(les_shape, type = "pairs")
 
-Check the distribution of differences:
-```{r}
-ggplot(les_shape) +
-  geom_histogram(aes(x =lso_worldpop_2019 - lso_facebook_2019))
+plot_compare(les_shape, type = "hist")
+summary_compare(les_shape)
 ```
 
 ### User specific inputs

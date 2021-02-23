@@ -76,6 +76,10 @@ This package is in it's very starting stages. Here's the planned/proposed dev.
 - [x] supress or manage warnings on `data.table` with `gmin` in `match_nearest`
 - [x] double check where people go missing (is it because of holes? technically extents should be merged and should cover all the raster inputs)
 - [x] rename `iso_codes` to geoBoundaries_data
+- change plotting function for map so that option to overwrite the default transformations!
+- fix tooltips with ggplotly 
+- show an example with 4-5 rasters (and a larger country, as a benchmark)
+- add vignettes for customizing
 - generally refactor `match_nearest` to be faster and cleaner
 - better guidance on resolution and rationale for default 
 - option to pass a field to aggregate to (i.e. if you download adm3 shapefile, make it easier to aggregate to 

@@ -19,6 +19,8 @@
 #'  both path & ext params.
 #' @param path if save = TRUE, then the filepath to write the plot out to
 #' @param ext file extension (i.e. "jpeg", "png", "tiff")
+#' @param width width of file to write to, gets passed to ggsave
+#' @param height height of file to write to, gets passed to ggsave
 #'
 #' @return either a ggplot or a message stating where the ggplot was written
 #'  out to.
@@ -31,7 +33,9 @@ plot_compare <- function(comp_obj,
                          interactive = FALSE,
                          save = FALSE,
                          path = NULL,
-                         ext = "jpeg") {
+                         ext = "jpeg",
+                         width = 8,
+                         height = 8) {
 
   if(save & is.null(path)) stop("Please pass a filename to the `path argument` to save!")
 
@@ -80,7 +84,7 @@ plot_compare <- function(comp_obj,
 
     if(interactive) ext <- "html"
     save_popplot(out, path, ext = ext, width = width, height = width)
-    return(paste("Saved plot output to", paste0("path.", ext)))
+    return(paste("Saved plot output to", paste0(path, ".", ext)))
 
   } else {
     return(out)
@@ -214,7 +218,8 @@ diff_plot <- function(ind_mat, comp_dt, comp_obj, type, object_brick) {
     pop_names_long <- c("id", names(comp_dt)[grep(" - ", names(comp_dt))])
     comp_dt_long <- melt(comp_dt[ , pop_names_long, with = FALSE],
                          id.vars = "id")
-    comp_dt_long <- dplyr::left_join(select(comp_obj, id), comp_dt_long)
+    comp_obj$id <- 1:nrow(comp_obj)
+    comp_dt_long <- dplyr::left_join(dplyr::select(comp_obj, id), comp_dt_long)
 
   }
 
@@ -230,7 +235,7 @@ diff_plot <- function(ind_mat, comp_dt, comp_obj, type, object_brick) {
 
     out <-
       ggplot(comp_dt_long) +
-      scale_fill_gradient2(labels = inv_trans,
+      scale_fill_gradient2(labels = inv_diff,
                            name = "Difference between \n population estimates") +
       facet_wrap(~variable, labeller = labeller(variable = label_wrap_gen(25)))
 
@@ -238,13 +243,13 @@ diff_plot <- function(ind_mat, comp_dt, comp_obj, type, object_brick) {
     if(object_brick) {
       out <-
         out +
-        geom_raster(aes(x = x, y = y, fill = transform(value)))
+        geom_raster(aes(x = x, y = y, fill = trans_diff(value)))
         coord_quickmap()
 
     } else {
       out <-
         out +
-        geom_sf(aes(fill = transform(value)))
+        geom_sf(aes(fill = trans_diff(value)))
     }
   }
   return(out)
@@ -314,12 +319,12 @@ prep_dt <- function(comp_obj, pop_names, object_brick) {
 
 }
 
-save_popplot <- function(out, path, ext = ".jpeg", width = 8, height = 8) {
+save_popplot <- function(out, path, ext, width = 8, height = 8) {
 
   if("plotly" %in% class(out)) {
-    htmlwidgets::saveWidget(as.widget(out), paste0(path, ".html"))
+    htmlwidgets::saveWidget(as_widget(out), paste0(path, ".html"))
   } else {
-    ggsave(paste0(path, ext), out, width = width, height = height)
+    ggsave(paste0(path, ".", ext), out, width = width, height = height)
   }
 
 }

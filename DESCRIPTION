@@ -20,6 +20,7 @@ Imports:
     foreach,
     raster,
     sf,
+    dplyr,
     glue,
     httr,
     jsonlite
@@ -27,7 +28,9 @@ Suggests:
     knitr,
     rmarkdown,
     plotly,
-    ggplot2
+    ggplot2,
+    hexbin, 
+    GGally
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
