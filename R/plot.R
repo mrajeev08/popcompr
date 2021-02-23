@@ -105,7 +105,7 @@ plot_compare <- function(comp_obj,
 #' @export
 #' @import raster sf
 #'
-summarize_pops <- function(comp_obj, select_pops = NULL,
+summary_compare <- function(comp_obj, select_pops = NULL,
                            funs = list(sum = function(x) sum(x, na.rm = TRUE),
                                        mean = function(x) mean(x, na.rm = TRUE),
                                        max = function(x) max(x, na.rm = TRUE),
@@ -254,7 +254,7 @@ select_handler <- function(select_pops, comp_obj, object_brick) {
 
   if(is.null(select_pops)) {
 
-    pop_names <- names(comp_obj)[grep("popcmp_", names, fixed = TRUE)]
+    pop_names <- names(comp_obj)[grep("popcmp_", names(comp_obj), fixed = TRUE)]
 
   } else {
     if(object_brick) {

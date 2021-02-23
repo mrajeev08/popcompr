@@ -16,14 +16,19 @@ knitr::opts_chunk$set(
 
 `popcompr` is an R package to make it easier to compare different high resolution population datasets for humanitarian and research purposes. It is under active development and has not been released, but the code is available through a GPL3 license.
 
+To install package from github: 
+```{r, include = FALSE}
+remotes::install_github("mrajeev08/popcompr")
+```
+
+
 ### An example comparing 2019 population estimates for Lesotho from World Pop & Facebook/CIESIN
 Included in the package are files to reproduce a minimal working example for the country of Lesotho. `lesotho_wp_2019` and `lesotho_fb_2019` are included in the package (use `?lesotho_wp_2019` for more details).
 
 #### First load the necessary libraries 
 + some extras for plotting (plotly & ggplot2)
 ```{r setup}
-# library(popcompr)
-devtools::load_all()
+library(popcompr)
 library(raster)
 library(data.table)
 library(foreach)
@@ -67,34 +72,11 @@ stopCluster(cl)
 The output is a raster brick with a layer corresponding to each of the input population rasters. We can vizualize and compare the rasters:
 
 ##### Map of differences
+`plot_compare` and `summary_compare` are convenience functions to generate automatic plots. 
+The default is map of the differences between the population datasets.
 ```{r}
-comp_dt <- data.table(as.data.frame(exe, xy = TRUE)) # we use data.table as it's easier to 
+plot_compare(exe)
 
-# transform functions for vizualizing difference
-transform <- function(x) {
-  logged <- log(abs(x) + 1e-6) * sign(x)
-  return(logged)
-}
-inv_trans <- function(x) {
-  inv <- (exp(abs(x)) - 1e-6) * sign(x)
-  return(round(inv, 2))
-}
-
-map_compare <-
-  ggplot(comp_dt) +
-  geom_raster(aes(x = x, y = y, fill = transform(lso_worldpop_2019 - lso_facebook_2019))) +
-  scale_fill_gradient2(labels = inv_trans, 
-                       name = "Difference between \n population estimates") +
-  coord_quickmap()
-map_compare
-
-hex_compare <-
-  ggplot(comp_dt) +
-  geom_hex(aes(x = lso_worldpop_2019, y = lso_facebook_2019), color = "grey") +
-  geom_abline(intercept = 0, slope = 1, linetype = 2, color = "grey") +
-  scale_fill_distiller(direction = 1, trans = "log",
-                       labels = function(x) round(x, -1))
-hex_compare
 ```
 
 You can also make these interactive using plotly/ggplotly functions:
