@@ -30,7 +30,8 @@ Suggests:
     plotly,
     ggplot2,
     hexbin, 
-    GGally
+    GGally,
+    doParallel
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
